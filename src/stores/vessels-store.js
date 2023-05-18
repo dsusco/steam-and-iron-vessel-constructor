@@ -11,7 +11,12 @@ export const useVesselsStore = defineStore('vesselStore', () => {
   function addVessel () {
     vessels.value[nanoid()] = {
       class: '',
-      type: Object.keys(CLASSIFICATIONS[Object.keys(CLASSIFICATIONS)[0]])[0]
+      type: Object.keys(CLASSIFICATIONS[Object.keys(CLASSIFICATIONS)[0]])[0],
+      batteries: {
+        A: { weapon: '' },
+        B: { weapon: '' },
+        C: { weapon: '' }
+      }
     }
   }
 

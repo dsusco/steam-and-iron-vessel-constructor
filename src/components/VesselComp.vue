@@ -1,5 +1,6 @@
 <script setup>
 import CLASSIFICATIONS from '@/constants/classifications'
+import BatteryComp from '@/components/BatteryComp.vue'
 
 const
   props = defineProps({
@@ -26,6 +27,16 @@ const
     </label>
 
     <button type="button" @click="$emit('removeVessel')">×</button>
+
+    <fieldset>
+      <legend>Batteries</legend>
+
+      <BatteryComp
+        v-for="(battery, key) in vessel.batteries" :key="key"
+        :battery="battery"
+        :label="key" />
+    </fieldset>
+
   </fieldset>
 </template>
 

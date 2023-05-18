@@ -11,7 +11,8 @@ export const useWeaponsStore = defineStore('weaponStore', () => {
   function addWeapon () {
     weapons.value[nanoid()] = {
       name: '',
-      type: Object.keys(WEAPON_TYPES)[0]
+      type: Object.keys(WEAPON_TYPES)[0],
+      rangeBands: []
     }
   }
 

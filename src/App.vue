@@ -1,5 +1,7 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+
+const version = appVersion
 </script>
 
 <template>

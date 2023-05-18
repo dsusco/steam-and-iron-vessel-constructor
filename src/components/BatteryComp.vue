@@ -6,6 +6,7 @@ import { useWeaponsStore } from '@/stores/weapons-store'
 const
   props = defineProps({
     battery: { type: Object, required: true },
+    if: { type: Boolean, required: true },
     label: { type: String, required: true }
   }),
   weaponsStore = useWeaponsStore(),
@@ -13,7 +14,7 @@ const
 </script>
 
 <template>
-  <fieldset>
+  <fieldset v-if="if">
     <legend>{{ label }}</legend>
 
     <label>

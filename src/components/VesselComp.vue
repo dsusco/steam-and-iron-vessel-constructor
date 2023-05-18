@@ -18,6 +18,13 @@ const
 
     return { ready, damaged, crippled }
   }),
+  batteryIf = computed(() => {
+    return {
+      a: true,
+      b: props.vessel.batteries.a.weapon !== '',
+      c: props.vessel.batteries.b.weapon !== ''
+    }
+  }),
   classification = computed(() => Object.keys(CLASSIFICATIONS).find((c) => Object.keys(CLASSIFICATIONS[c]).includes(props.vessel.type))),
   engineRatingGamuts = computed(() => {
     const
@@ -66,6 +73,7 @@ const
       <BatteryComp
         v-for="(battery, key) in vessel.batteries" :key="key"
         :battery="battery"
+        :if="batteryIf[key]"
         :label="key" />
     </fieldset>
 

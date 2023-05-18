@@ -1,3 +1,4 @@
+import baseline from 'baseline-scss';
 import fs from 'fs'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
@@ -11,6 +12,14 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: "@import '_baseline';",
+        includePaths: [...baseline.includePaths],
+      }
     }
   },
   define: {

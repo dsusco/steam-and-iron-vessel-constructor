@@ -5,102 +5,19 @@ import { ARMOR_RATING_GAMUT, ENGINE_RATING_GAMUT, FIRING_ARC_GAMUT, HULL_RATING_
 import CLASSIFICATIONS from '@/constants/classifications'
 import BatteryComp from '@/components/BatteryComp.vue'
 import ConditionComp from '@/components/ConditionComp.vue'
+import { useArmorRatingGamuts, useBatteryIf, useClassification, useEngineRatingGamuts, useFiringArcGamuts, useHullCheckboxes } from '@/composables/vessel-certifier'
 import FiringArcs from '@/models/firing-arcs'
 
 const
   props = defineProps({
     vessel: { type: Object, required: true }
   }),
-  armorRatingGamuts = computed(() => {
-    const
-      ready = ARMOR_RATING_GAMUT.slice(
-        Math.max(0, ARMOR_RATING_GAMUT.indexOf(props.vessel.conditions.damaged.armorRating)),
-        ARMOR_RATING_GAMUT.length),
-      damaged = ARMOR_RATING_GAMUT.slice(
-        Math.max(0, ARMOR_RATING_GAMUT.indexOf(props.vessel.conditions.crippled.armorRating)),
-        ARMOR_RATING_GAMUT.indexOf(props.vessel.conditions.ready.armorRating) + 1),
-      crippled = ARMOR_RATING_GAMUT.slice(
-        0,
-        ARMOR_RATING_GAMUT.indexOf(props.vessel.conditions.damaged.armorRating) + 1)
-
-    return { ready, damaged, crippled }
-  }),
-  batteryIf = computed(() => {
-    return {
-      a: true,
-      b: props.vessel.batteries.a.weapon !== '',
-      c: props.vessel.batteries.b.weapon !== ''
-    }
-  }),
-  classification = computed(() => Object.keys(CLASSIFICATIONS).find((c) => Object.keys(CLASSIFICATIONS[c]).includes(props.vessel.type))),
-  engineRatingGamuts = computed(() => {
-    const
-      length = CLASSIFICATIONS[classification.value][props.vessel.type].maximumEngineRating,
-      smallCraft = ENGINE_RATING_GAMUT.slice(0, length + 1),
-      ready = ENGINE_RATING_GAMUT.slice(
-        Math.max(0, +props.vessel.conditions.damaged.engineRating),
-        length + 1),
-      damaged = ENGINE_RATING_GAMUT.slice(
-        Math.max(0, +props.vessel.conditions.crippled.engineRating),
-        Math.min(length, +props.vessel.conditions.ready.engineRating) + 1),
-      crippled = ENGINE_RATING_GAMUT.slice(
-        0,
-        Math.min(length, +props.vessel.conditions.damaged.engineRating) + 1)
-
-    return { ready, damaged, crippled, smallCraft }
-  }),
-  firingArcGamuts = computed(() => {
-    const
-      conditions = ['ready', 'damaged', 'crippled'],
-      batteries = ['a', 'b', 'c'],
-      firingArcs = ['forward', 'astarboardForward', 'astarboardAft', 'aft', 'aportAft', 'aportForward', 'above', 'below']
-
-    return conditions.reduce(
-      (gamuts, condition) => {
-        gamuts[condition] = batteries.reduce(
-          (gamuts, battery) => {
-            gamuts[battery] = firingArcs.reduce(
-              (gamuts, firingArc) => {
-                switch (condition) {
-                  case 'ready':
-                    gamuts[firingArc] = FIRING_ARC_GAMUT.slice(
-                      Math.max(0, +props.vessel.conditions.damaged.firingArcs[battery][firingArc]),
-                      FIRING_ARC_GAMUT.length
-                    )
-                    break;
-                  case 'damaged':
-                    gamuts[firingArc] = FIRING_ARC_GAMUT.slice(
-                      Math.max(0, +props.vessel.conditions.crippled.firingArcs[battery][firingArc]),
-                      +props.vessel.conditions.ready.firingArcs[battery][firingArc] + 1)
-                    break;
-                  case 'crippled':
-                    gamuts[firingArc] = FIRING_ARC_GAMUT.slice(
-                      0,
-                      +props.vessel.conditions.damaged.firingArcs[battery][firingArc] + 1)
-                    break;
-                }
-
-                return gamuts
-              },
-              {}
-            )
-            return gamuts
-          },
-          {}
-        )
-        return gamuts
-      },
-      {}
-    )
-  }),
-  hullCheckboxes = computed(() => {
-    const
-      ready = Math.ceil(+props.vessel.hullRating / 3),
-      damaged = Math.ceil((+props.vessel.hullRating - ready) / 2),
-      crippled = +props.vessel.hullRating - ready - damaged
-
-    return { ready, damaged, crippled }
-  }),
+  armorRatingGamuts = computed(() => useArmorRatingGamuts(props.vessel)),
+  batteryIf = computed(() => useBatteryIf(props.vessel)),
+  classification = computed(() => useClassification(props.vessel)),
+  engineRatingGamuts = computed(() => useEngineRatingGamuts(props.vessel)),
+  firingArcGamuts = computed(() => useFiringArcGamuts(props.vessel)),
+  hullCheckboxes = computed(() => useHullCheckboxes(props.vessel)),
   isColossal = computed(() => Object.keys(CLASSIFICATIONS.Colossal).includes(props.vessel.type)),
   isSmallCraft = computed(() => Object.keys(CLASSIFICATIONS['Small Craft']).includes(props.vessel.type))
 

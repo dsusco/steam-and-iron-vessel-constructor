@@ -48,4 +48,7 @@ const
 </template>
 
 <style lang="scss" scoped>
+input {
+  width: 1.8rem;
+}
 </style>

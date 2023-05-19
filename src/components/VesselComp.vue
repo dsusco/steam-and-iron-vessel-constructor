@@ -51,77 +51,47 @@ const
   }),
   firingArcGamuts = computed(() => {
     const
-      ready = {
-        a: new FiringArcs(FIRING_ARC_GAMUT),
-        b: new FiringArcs(FIRING_ARC_GAMUT),
-        c: new FiringArcs(FIRING_ARC_GAMUT)
-      },
-      damaged = {
-        a: new FiringArcs(
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.a.forward + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.a.astarboardForward + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.a.astarboardAft + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.a.aft + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.a.aportAft + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.a.aportForward + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.a.above + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.a.below + 1)
-        ),
-        b: new FiringArcs(
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.b.forward + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.b.astarboardForward + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.b.astarboardAft + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.b.aft + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.b.aportAft + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.b.aportForward + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.b.above + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.b.below + 1)
-        ),
-        c: new FiringArcs(
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.c.forward + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.c.astarboardForward + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.c.astarboardAft + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.c.aft + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.c.aportAft + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.c.aportForward + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.c.above + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.ready.firingArcs.c.below + 1)
-        )
-      },
-      crippled = {
-        a: new FiringArcs(
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.a.forward + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.a.astarboardForward + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.a.astarboardAft + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.a.aft + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.a.aportAft + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.a.aportForward + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.a.above + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.a.below + 1)
-        ),
-        b: new FiringArcs(
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.b.forward + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.b.astarboardForward + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.b.astarboardAft + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.b.aft + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.b.aportAft + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.b.aportForward + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.b.above + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.b.below + 1)
-        ),
-        c: new FiringArcs(
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.c.forward + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.c.astarboardForward + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.c.astarboardAft + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.c.aft + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.c.aportAft + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.c.aportForward + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.c.above + 1),
-          FIRING_ARC_GAMUT.slice(0, +props.vessel.conditions.damaged.firingArcs.c.below + 1)
-        )
-      }
+      conditions = ['ready', 'damaged', 'crippled'],
+      batteries = ['a', 'b', 'c'],
+      firingArcs = ['forward', 'astarboardForward', 'astarboardAft', 'aft', 'aportAft', 'aportForward', 'above', 'below']
 
-    return { ready, damaged, crippled }
+    return conditions.reduce(
+      (gamuts, condition) => {
+        gamuts[condition] = batteries.reduce(
+          (gamuts, battery) => {
+            gamuts[battery] = firingArcs.reduce(
+              (gamuts, firingArc) => {
+                switch (condition) {
+                  case 'ready':
+                    gamuts[firingArc] = FIRING_ARC_GAMUT.slice(
+                      Math.max(0, +props.vessel.conditions.damaged.firingArcs[battery][firingArc]),
+                      FIRING_ARC_GAMUT.length
+                    )
+                    break;
+                  case 'damaged':
+                    gamuts[firingArc] = FIRING_ARC_GAMUT.slice(
+                      Math.max(0, +props.vessel.conditions.crippled.firingArcs[battery][firingArc]),
+                      +props.vessel.conditions.ready.firingArcs[battery][firingArc] + 1)
+                    break;
+                  case 'crippled':
+                    gamuts[firingArc] = FIRING_ARC_GAMUT.slice(
+                      0,
+                      +props.vessel.conditions.damaged.firingArcs[battery][firingArc] + 1)
+                    break;
+                }
+
+                return gamuts
+              },
+              {}
+            )
+            return gamuts
+          },
+          {}
+        )
+        return gamuts
+      },
+      {}
+    )
   }),
   hullCheckboxes = computed(() => {
     const

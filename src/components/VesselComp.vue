@@ -13,9 +13,15 @@ const
   }),
   armorRatingGamuts = computed(() => {
     const
-      ready = ARMOR_RATING_GAMUT,
-      damaged = ARMOR_RATING_GAMUT.slice(0, ARMOR_RATING_GAMUT.indexOf(props.vessel.conditions.ready.armorRating) + 1),
-      crippled = ARMOR_RATING_GAMUT.slice(0, ARMOR_RATING_GAMUT.indexOf(props.vessel.conditions.damaged.armorRating) + 1)
+      ready = ARMOR_RATING_GAMUT.slice(
+        Math.max(0, ARMOR_RATING_GAMUT.indexOf(props.vessel.conditions.damaged.armorRating)),
+        ARMOR_RATING_GAMUT.length),
+      damaged = ARMOR_RATING_GAMUT.slice(
+        Math.max(0, ARMOR_RATING_GAMUT.indexOf(props.vessel.conditions.crippled.armorRating)),
+        ARMOR_RATING_GAMUT.indexOf(props.vessel.conditions.ready.armorRating) + 1),
+      crippled = ARMOR_RATING_GAMUT.slice(
+        0,
+        ARMOR_RATING_GAMUT.indexOf(props.vessel.conditions.damaged.armorRating) + 1)
 
     return { ready, damaged, crippled }
   }),
@@ -30,11 +36,18 @@ const
   engineRatingGamuts = computed(() => {
     const
       length = CLASSIFICATIONS[classification.value][props.vessel.type].maximumEngineRating,
-      ready = ENGINE_RATING_GAMUT.slice(0, length + 1),
-      damaged = ENGINE_RATING_GAMUT.slice(0, Math.min(length, +props.vessel.conditions.ready.engineRating) + 1),
-      crippled = ENGINE_RATING_GAMUT.slice(0, Math.min(length, +props.vessel.conditions.damaged.engineRating) + 1)
+      smallCraft = ENGINE_RATING_GAMUT.slice(0, length + 1),
+      ready = ENGINE_RATING_GAMUT.slice(
+        Math.max(0, +props.vessel.conditions.damaged.engineRating),
+        length + 1),
+      damaged = ENGINE_RATING_GAMUT.slice(
+        Math.max(0, +props.vessel.conditions.crippled.engineRating),
+        Math.min(length, +props.vessel.conditions.ready.engineRating) + 1),
+      crippled = ENGINE_RATING_GAMUT.slice(
+        0,
+        Math.min(length, +props.vessel.conditions.damaged.engineRating) + 1)
 
-    return { ready, damaged, crippled }
+    return { ready, damaged, crippled, smallCraft }
   }),
   firingArcGamuts = computed(() => {
     const
@@ -187,7 +200,7 @@ const
       <label>
         Engine Rating
         <select v-model="vessel.engineRating">
-          <option v-for="n in engineRatingGamuts.ready" :key="n">{{ n }}</option>
+          <option v-for="n in engineRatingGamuts.smallCraft" :key="n">{{ n }}</option>
         </select>
       </label>
 

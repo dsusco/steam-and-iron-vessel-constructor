@@ -1,9 +1,12 @@
 <script setup>
+import FiringArcsComp from '@/components/FiringArcsComp.vue'
+
 const
   props = defineProps({
-    condition: { type: Object, required: true },
     armorRatingGamut: { type: Array, required: true },
+    condition: { type: Object, required: true },
     engineRatingGamut: { type: Array, required: true },
+    firingArcGamuts: { type: Object, required: true },
     hullCheckboxes: { type: Number, required: true },
     label: { type: String, required: true }
   })
@@ -31,6 +34,16 @@ const
         <option v-for="n in armorRatingGamut" :key="n">{{ n }}</option>
       </select>
     </label>
+
+    <fieldset>
+      <legend>Firing Arcs</legend>
+
+      <FiringArcsComp
+        v-for="(firingArcs, key) in condition.firingArcs" :key="key"
+        :firingArcs="firingArcs"
+        :firingArcGamut="firingArcGamuts[key]"
+        :label="key" />
+    </fieldset>
   </fieldset>
 </template>
 

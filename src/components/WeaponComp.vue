@@ -1,9 +1,10 @@
 <script setup>
 import { computed } from 'vue'
 
-import { ACCURACY_GAMUT, DAMAGE_GAMUT, PENETRATION_GAMUT, RANGE_GAMUT, RATE_OF_FIRE_GAMUT } from '@/constants/gamuts'
+import { RANGE_GAMUT } from '@/constants/gamuts'
 import WEAPON_TYPES from '@/constants/weapon-types'
 import RangeBandComp from '@/components/RangeBandComp.vue'
+import RangeBand from '@/models/range-band'
 
 const
   props = defineProps({
@@ -22,14 +23,7 @@ function addRangeBand () {
   const range = nextMinimumRange.value
 
   if (range) {
-    props.weapon.rangeBands.push({
-      minimumRange: range,
-      maximumRange: range,
-      rateOfFire: RATE_OF_FIRE_GAMUT[0],
-      accuracy: ACCURACY_GAMUT[0],
-      damage: DAMAGE_GAMUT[0],
-      penetration: PENETRATION_GAMUT[0]
-    })
+    props.weapon.rangeBands.push(new RangeBand(range))
   }
 }
 

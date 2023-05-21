@@ -13,6 +13,7 @@ const weaponsStore = useWeaponsStore()
 
     <WeaponComp
       v-for="(weapon, id) in weaponsStore.weapons" :key="id"
+      :id ="id"
       :weapon="weapon"
       @remove-weapon="weaponsStore.removeWeapon(id)" />
   </main>

@@ -8,6 +8,7 @@ import RangeBand from '@/models/range-band'
 
 const
   props = defineProps({
+    id: { type: String, required: true },
     weapon: { type: Object, required: true }
   }),
   nextMinimumRange = computed(() => {
@@ -25,30 +26,6 @@ function addRangeBand () {
   if (range) {
     props.weapon.rangeBands.push(new RangeBand(range))
   }
-}
-
-function maximumRangeGamut (index) {
-  const
-    minimumRange = +props.weapon.rangeBands[+index].minimumRange,
-    nextRangeBand = props.weapon.rangeBands[+index + 1],
-    gamutEnd = nextRangeBand ? +nextRangeBand.minimumRange - 1 : WEAPON_TYPES[props.weapon.type].maximumRange
-
-  return Array.from(
-    { length: Math.abs(gamutEnd - minimumRange) + 1 },
-    (_, i) => i + minimumRange
-  )
-}
-
-function minimumRangeGamut (index) {
-  const
-    maximumRange = +props.weapon.rangeBands[+index].maximumRange,
-    prevRangeBand = props.weapon.rangeBands[+index - 1],
-    gamutStart = prevRangeBand ? +prevRangeBand.maximumRange + 1 : RANGE_GAMUT[0]
-
-  return Array.from(
-    { length: Math.abs(maximumRange - gamutStart) + 1 },
-    (_, i) => i + gamutStart
-  )
 }
 
 function removeRangeBand (index) {
@@ -81,9 +58,9 @@ function removeRangeBand (index) {
 
       <RangeBandComp
         v-for="(rangeBand, index) in weapon.rangeBands" :key="index"
+        :index="index"
         :rangeBand="rangeBand"
-        :maximumRangeGamut="maximumRangeGamut(index)"
-        :minimumRangeGamut="minimumRangeGamut(index)"
+        :weaponId="id"
         @remove-range-band="removeRangeBand(index)" />
     </fieldset>
   </fieldset>

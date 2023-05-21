@@ -1,7 +1,6 @@
 <script setup>
 import { computed } from 'vue'
 
-import { RANGE_GAMUT } from '@/constants/gamuts'
 import WEAPON_TYPES from '@/constants/weapon-types'
 import RangeBandComp from '@/components/RangeBandComp.vue'
 import RangeBand from '@/models/range-band'

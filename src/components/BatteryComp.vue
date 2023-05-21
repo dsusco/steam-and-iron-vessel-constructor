@@ -6,15 +6,14 @@ import { useWeaponsStore } from '@/stores/weapons-store'
 const
   props = defineProps({
     battery: { type: Object, required: true },
-    if: { type: Boolean, required: true },
-    label: { type: String, required: true }
+    label: { type: String, required: true },
   }),
   weaponsStore = useWeaponsStore(),
   weapon = computed(() => weaponsStore.weapons[props.battery.weapon])
 </script>
 
 <template>
-  <fieldset v-if="if">
+  <fieldset>
     <legend>{{ label }}</legend>
 
     <label>

@@ -1,25 +1,19 @@
 <script setup>
 import { computed, provide } from 'vue'
 
-import { ARMOR_RATING_GAMUT, ENGINE_RATING_GAMUT, FIRING_ARC_GAMUT, HULL_RATING_GAMUT, SIZE_CHECKBOXES_GAMUT } from '@/constants/gamuts'
+import { ARMOR_RATING_GAMUT, ENGINE_RATING_GAMUT, HULL_RATING_GAMUT, SIZE_CHECKBOXES_GAMUT } from '@/constants/gamuts'
 import CLASSIFICATIONS from '@/constants/classifications'
 import BatteryComp from '@/components/BatteryComp.vue'
 import ConditionComp from '@/components/ConditionComp.vue'
-import { useArmorRatingGamuts, useBatteryIf, useClassification, useEngineRatingGamuts, useFiringArcGamuts, useHullCheckboxes } from '@/composables/vessel-certifier'
-import FiringArcs from '@/models/firing-arcs'
 
 const
   props = defineProps({
     vessel: { type: Object, required: true }
   }),
-  armorRatingGamuts = computed(() => useArmorRatingGamuts(props.vessel)),
-  batteryIf = computed(() => useBatteryIf(props.vessel)),
-  classification = computed(() => useClassification(props.vessel)),
-  engineRatingGamuts = computed(() => useEngineRatingGamuts(props.vessel)),
-  firingArcGamuts = computed(() => useFiringArcGamuts(props.vessel)),
-  hullCheckboxes = computed(() => useHullCheckboxes(props.vessel)),
+  classification = computed(() => Object.keys(CLASSIFICATIONS).find((c) => Object.keys(CLASSIFICATIONS[c]).includes(props.vessel.type))),
   isColossal = computed(() => Object.keys(CLASSIFICATIONS.Colossal).includes(props.vessel.type)),
-  isSmallCraft = computed(() => Object.keys(CLASSIFICATIONS['Small Craft']).includes(props.vessel.type))
+  isSmallCraft = computed(() => Object.keys(CLASSIFICATIONS['Small Craft']).includes(props.vessel.type)),
+  smallCraftEngineRatingGamut = computed(() => ENGINE_RATING_GAMUT.slice(0, CLASSIFICATIONS[classification.value][props.vessel.type].maximumEngineRating + 1))
 
   provide('batteries', computed(() => props.vessel.batteries))
 </script>
@@ -50,7 +44,6 @@ const
       <BatteryComp
         v-for="(battery, key) in vessel.batteries" :key="key"
         :battery="battery"
-        :if="batteryIf[key]"
         :label="key" />
     </fieldset>
 
@@ -65,13 +58,26 @@ const
       </label>
 
       <ConditionComp
-        v-for="(condition, key) in vessel.conditions" :key="key"
-        :armorRatingGamut="armorRatingGamuts[key]"
-        :condition="condition"
-        :engineRatingGamut="engineRatingGamuts[key]"
-        :firingArcGamuts="firingArcGamuts[key]"
-        :hullCheckboxes="hullCheckboxes[key]"
-        :label="key" />
+        :condition="vessel.conditions.ready"
+        :label="'ready'"
+        :maximumVesselEngineRating="CLASSIFICATIONS[classification][vessel.type].maximumEngineRating"
+        :nextCondition="vessel.conditions.damaged"
+        :vesselHullRating="+vessel.hullRating" />
+
+      <ConditionComp
+        :condition="vessel.conditions.damaged"
+        :label="'damaged'"
+        :maximumVesselEngineRating="CLASSIFICATIONS[classification][vessel.type].maximumEngineRating"
+        :nextCondition="vessel.conditions.crippled"
+        :prevCondition="vessel.conditions.ready"
+        :vesselHullRating="+vessel.hullRating"  />
+
+      <ConditionComp
+        :condition="vessel.conditions.crippled"
+        :label="'crippled'"
+        :maximumVesselEngineRating="CLASSIFICATIONS[classification][vessel.type].maximumEngineRating"
+        :prevCondition="vessel.conditions.damaged"
+        :vesselHullRating="+vessel.hullRating" />
     </fieldset>
 
     <fieldset :hidden="!isSmallCraft">
@@ -87,7 +93,7 @@ const
       <label>
         Engine Rating
         <select v-model="vessel.engineRating">
-          <option v-for="n in engineRatingGamuts.smallCraft" :key="n">{{ n }}</option>
+          <option v-for="n in smallCraftEngineRatingGamut" :key="n">{{ n }}</option>
         </select>
       </label>
 

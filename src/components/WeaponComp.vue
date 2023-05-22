@@ -7,7 +7,6 @@ import RangeBand from '@/models/range-band'
 
 const
   props = defineProps({
-    id: { type: String, required: true },
     weapon: { type: Object, required: true }
   }),
   nextMinimumRange = computed(() => {
@@ -57,9 +56,10 @@ function removeRangeBand (index) {
 
       <RangeBandComp
         v-for="(rangeBand, index) in weapon.rangeBands" :key="index"
-        :index="index"
+        :maximumWeaponRange="WEAPON_TYPES[weapon.type].maximumRange"
+        :nextRangeBand="weapon.rangeBands[index + 1]"
+        :prevRangeBand="weapon.rangeBands[index - 1]"
         :rangeBand="rangeBand"
-        :weaponId="id"
         @remove-range-band="removeRangeBand(index)" />
     </fieldset>
   </fieldset>

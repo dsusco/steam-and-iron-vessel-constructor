@@ -7,16 +7,13 @@ import { useWeaponsStore } from '@/stores/weapons-store'
 
 const
   props = defineProps({
-    index: { type: Number, required: true },
-    rangeBand: { type: Object, required: true },
-    weaponId: { type: String, required: true }
+    maximumWeaponRange: { type: Number, required: true },
+    nextRangeBand: Object,
+    prevRangeBand: Object,
+    rangeBand: { type: Object, required: true }
   }),
-  weaponsStore = useWeaponsStore(),
-  weapon = computed(() => weaponsStore.weapons[props.weaponId]),
-  nextRangeBand = computed(() => weapon.value.rangeBands[+props.index + 1]),
-  prevRangeBand = computed(() => weapon.value.rangeBands[+props.index - 1]),
   maximumRangeGamut = computed(() => {
-    const gamutEnd = nextRangeBand.value ? +nextRangeBand.value.minimumRange - 1 : WEAPON_TYPES[weapon.value.type].maximumRange
+    const gamutEnd = props.nextRangeBand ? +props.nextRangeBand.minimumRange - 1 : props.maximumWeaponRange
 
     return Array.from(
       { length: Math.abs(gamutEnd - +props.rangeBand.minimumRange) + 1 },
@@ -24,7 +21,7 @@ const
     )
   }),
   minimumRangeGamut = computed(() => {
-    const gamutStart = prevRangeBand.value ? +prevRangeBand.value.maximumRange + 1 : RANGE_GAMUT[0]
+    const gamutStart = props.prevRangeBand ? +props.prevRangeBand.maximumRange + 1 : RANGE_GAMUT[0]
 
     return Array.from(
       { length: Math.abs(+props.rangeBand.maximumRange - gamutStart) + 1 },

@@ -1,15 +1,43 @@
 <script setup>
-import FiringArcsComp from '@/components/FiringArcsComp.vue'
+import { computed, provide } from 'vue'
+
+import { ARMOR_RATING_GAMUT, ENGINE_RATING_GAMUT } from '@/constants/gamuts'
+import FiringDiagramComp from '@/components/FiringDiagramComp.vue'
 
 const
   props = defineProps({
-    armorRatingGamut: { type: Array, required: true },
     condition: { type: Object, required: true },
-    engineRatingGamut: { type: Array, required: true },
-    firingArcGamuts: { type: Object, required: true },
-    hullCheckboxes: { type: Number, required: true },
-    label: { type: String, required: true }
+    label: { type: String, required: true },
+    maximumVesselEngineRating: { type: Number, required: true },
+    nextCondition: Object,
+    prevCondition: Object,
+    vesselHullRating: { type: Number, required: true }
+  }),
+  armorRatingGamut = computed(() => {
+    const
+      gamutStart = props.nextCondition ? ARMOR_RATING_GAMUT.indexOf(props.nextCondition.armorRating) : 0,
+      gamutEnd = props.prevCondition ? ARMOR_RATING_GAMUT.indexOf(props.prevCondition.armorRating) + 1 : ARMOR_RATING_GAMUT.length
+
+    return ARMOR_RATING_GAMUT.slice(gamutStart, gamutEnd)
+  }),
+  engineRatingGamut = computed(() => {
+    const
+      gamutStart = props.nextCondition ? +props.nextCondition.engineRating : 0,
+      gamutEnd = props.prevCondition ? +props.prevCondition.engineRating : props.maximumVesselEngineRating
+
+    return ENGINE_RATING_GAMUT.slice(gamutStart, gamutEnd + 1)
+  }),
+  hullCheckboxes = computed(() => {
+    const
+      ready = Math.ceil(props.vesselHullRating / 3),
+      damaged = Math.ceil((props.vesselHullRating - ready) / 2),
+      crippled = props.vesselHullRating - ready - damaged
+
+    return eval(props.label)
   })
+
+  provide('nextCondition', computed(() => props.nextCondition))
+  provide('prevCondition', computed(() => props.prevCondition))
 </script>
 
 <template>
@@ -38,10 +66,9 @@ const
     <fieldset>
       <legend>Firing Arcs</legend>
 
-      <FiringArcsComp
+      <FiringDiagramComp
         v-for="(firingArcs, key) in condition.firingArcs" :key="key"
         :firingArcs="firingArcs"
-        :firingArcGamut="firingArcGamuts[key]"
         :label="key" />
     </fieldset>
   </fieldset>

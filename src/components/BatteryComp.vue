@@ -6,7 +6,7 @@ import { useWeaponsStore } from '@/stores/weapons-store'
 const
   props = defineProps({
     battery: { type: Object, required: true },
-    label: { type: String, required: true },
+    label: { type: String, required: true }
   }),
   weaponsStore = useWeaponsStore(),
   weapon = computed(() => weaponsStore.weapons[props.battery.weapon])

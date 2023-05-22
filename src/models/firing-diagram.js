@@ -1,6 +1,6 @@
 import { FIRING_ARC_GAMUT } from '@/constants/gamuts'
 
-export default class FiringArcs {
+export default class FiringDiagram {
   constructor () {
     this.forward = FIRING_ARC_GAMUT[0]
     this.astarboardForward = FIRING_ARC_GAMUT[0]

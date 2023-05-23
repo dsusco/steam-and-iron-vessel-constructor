@@ -2,6 +2,7 @@
 import { computed, provide } from 'vue'
 
 import { ARMOR_RATING_GAMUT, ENGINE_RATING_GAMUT, HULL_RATING_GAMUT, SIZE_CHECKBOXES_GAMUT } from '@/constants/gamuts'
+import CONDITIONS from '@/constants/conditions'
 import CLASSIFICATIONS from '@/constants/classifications'
 import BatteryComp from '@/components/BatteryComp.vue'
 import ConditionComp from '@/components/ConditionComp.vue'
@@ -63,25 +64,12 @@ const
       </label>
 
       <ConditionComp
-        :condition="vessel.conditions.ready"
-        :label="'ready'"
+        v-for="(condition, key) in CONDITIONS"
+        :condition="vessel.conditions[key]"
+        :label="key"
         :maximumVesselEngineRating="CLASSIFICATIONS[classification][vessel.type].maximumEngineRating"
-        :nextCondition="vessel.conditions.damaged"
-        :vesselHullRating="+vessel.hullRating" />
-
-      <ConditionComp
-        :condition="vessel.conditions.damaged"
-        :label="'damaged'"
-        :maximumVesselEngineRating="CLASSIFICATIONS[classification][vessel.type].maximumEngineRating"
-        :nextCondition="vessel.conditions.crippled"
-        :prevCondition="vessel.conditions.ready"
-        :vesselHullRating="+vessel.hullRating"  />
-
-      <ConditionComp
-        :condition="vessel.conditions.crippled"
-        :label="'crippled'"
-        :maximumVesselEngineRating="CLASSIFICATIONS[classification][vessel.type].maximumEngineRating"
-        :prevCondition="vessel.conditions.damaged"
+        :nextCondition="vessel.conditions[condition.nextCondition]"
+        :prevCondition="vessel.conditions[condition.prevCondition]"
         :vesselHullRating="+vessel.hullRating" />
     </fieldset>
 

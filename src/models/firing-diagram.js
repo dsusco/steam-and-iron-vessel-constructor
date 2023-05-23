@@ -1,14 +1,10 @@
 import { FIRING_ARC_GAMUT } from '@/constants/gamuts'
+import WEAPON_TYPES from '@/constants/weapon-types'
 
 export default class FiringDiagram {
   constructor () {
-    this.forward = FIRING_ARC_GAMUT[0]
-    this.astarboardForward = FIRING_ARC_GAMUT[0]
-    this.astarboardAft = FIRING_ARC_GAMUT[0]
-    this.aft = FIRING_ARC_GAMUT[0]
-    this.aportAft = FIRING_ARC_GAMUT[0]
-    this.aportForward = FIRING_ARC_GAMUT[0]
-    this.above = FIRING_ARC_GAMUT[0]
-    this.below = FIRING_ARC_GAMUT[0]
+    Object.keys(WEAPON_TYPES)
+      .reduce((arcs, weaponType) => arcs.concat(WEAPON_TYPES[weaponType].firingArcs), [])
+        .forEach((arc) => this[arc] = FIRING_ARC_GAMUT[0])
   }
 }

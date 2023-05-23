@@ -21,7 +21,7 @@ const
     )
   }),
   minimumRangeGamut = computed(() => {
-    const gamutStart = props.prevRangeBand ? +props.prevRangeBand.maximumRange + 1 : RANGE_GAMUT[0]
+    const gamutStart = props.prevRangeBand ? +props.prevRangeBand.maximumRange + 1 : +RANGE_GAMUT[0]
 
     return Array.from(
       { length: Math.abs(+props.rangeBand.maximumRange - gamutStart) + 1 },

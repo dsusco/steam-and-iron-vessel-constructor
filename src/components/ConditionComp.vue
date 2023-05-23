@@ -22,8 +22,8 @@ const
   }),
   engineRatingGamut = computed(() => {
     const
-      gamutStart = props.nextCondition ? +props.nextCondition.engineRating : 0,
-      gamutEnd = props.prevCondition ? +props.prevCondition.engineRating : props.maximumVesselEngineRating
+      gamutStart = props.nextCondition ? ENGINE_RATING_GAMUT.indexOf(props.nextCondition.engineRating) : 0,
+      gamutEnd = props.prevCondition ? ENGINE_RATING_GAMUT.indexOf(props.prevCondition.engineRating) : props.maximumVesselEngineRating
 
     return ENGINE_RATING_GAMUT.slice(gamutStart, gamutEnd + 1)
   }),

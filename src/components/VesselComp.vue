@@ -10,10 +10,15 @@ const
   props = defineProps({
     vessel: { type: Object, required: true }
   }),
-  classification = computed(() => Object.keys(CLASSIFICATIONS).find((c) => Object.keys(CLASSIFICATIONS[c]).includes(props.vessel.type))),
+  classification = computed(() =>
+    Object.keys(CLASSIFICATIONS).find((c) =>
+      Object.keys(CLASSIFICATIONS[c]).includes(props.vessel.type))),
   isColossal = computed(() => Object.keys(CLASSIFICATIONS.Colossal).includes(props.vessel.type)),
   isSmallCraft = computed(() => Object.keys(CLASSIFICATIONS['Small Craft']).includes(props.vessel.type)),
-  smallCraftEngineRatingGamut = computed(() => ENGINE_RATING_GAMUT.slice(0, CLASSIFICATIONS[classification.value][props.vessel.type].maximumEngineRating + 1))
+  smallCraftEngineRatingGamut = computed(() =>
+    ENGINE_RATING_GAMUT.slice(
+      0,
+      CLASSIFICATIONS[classification.value][props.vessel.type].maximumEngineRating + 1))
 
   provide('batteries', computed(() => props.vessel.batteries))
 </script>

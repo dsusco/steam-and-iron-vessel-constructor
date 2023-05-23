@@ -23,14 +23,14 @@ function target (value) {
 const
   ACCURACY_GAMUT = Array.from({ length: 5 }, (_, i) => target(i + 1)),
   ARMOR_RATING_GAMUT = Array.from({ length: 6 }, (_, i) => target(i)),
-  DAMAGE_GAMUT = Array.from({ length: 6 }, (_, i) => i + 1),
-  ENGINE_RATING_GAMUT = Array.from({ length: 13 }, (_, i) => i),
-  FIRING_ARC_GAMUT = Array.from({ length: 7 }, (_, i) => i),
-  HULL_RATING_GAMUT = Array.from({ length: 18 }, (_, i) => i + 1),
+  DAMAGE_GAMUT = Array.from({ length: 6 }, (_, i) => String(i + 1)),
+  ENGINE_RATING_GAMUT = Array.from({ length: 13 }, (_, i) => String(i)),
+  FIRING_ARC_GAMUT = Array.from({ length: 7 }, (_, i) => String(i)),
+  HULL_RATING_GAMUT = Array.from({ length: 18 }, (_, i) => String(i + 1)),
   PENETRATION_GAMUT = Array.from({ length: 6 }, (_, i) => difficultyModifiers(i)),
-  RANGE_GAMUT = Array.from({ length: 18 }, (_, i) => i + 1),
-  RATE_OF_FIRE_GAMUT = Array.from({ length: 6 }, (_, i) => i + 1),
-  SIZE_CHECKBOXES_GAMUT = Array.from({ length: 6 }, (_, i) => i + 1)
+  RANGE_GAMUT = Array.from({ length: 18 }, (_, i) => String(i + 1)),
+  RATE_OF_FIRE_GAMUT = Array.from({ length: 6 }, (_, i) => String(i + 1)),
+  SIZE_CHECKBOXES_GAMUT = Array.from({ length: 6 }, (_, i) => String(i + 1))
 
 export {
   ACCURACY_GAMUT,

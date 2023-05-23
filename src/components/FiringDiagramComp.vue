@@ -1,6 +1,7 @@
 <script setup>
 import { computed, inject } from 'vue'
 
+import WEAPON_TYPES from '@/constants/weapon-types'
 import FiringArcComp from '@/components/FiringArcComp.vue'
 import { useWeaponsStore } from '@/stores/weapons-store'
 
@@ -18,11 +19,10 @@ const
     <legend>{{ label }} ({{ weapon.name }})</legend>
 
     <FiringArcComp
-      v-for="arc in ['forward', 'astarboardForward', 'astarboardAft', 'aft', 'aportAft', 'aportForward', 'above', 'below']"
+      v-for="arc in WEAPON_TYPES[weapon.type].firingArcs"
       :battery="label"
       :label="arc"
-      :weapons="+firingArcs[arc]"
-      :weaponType="weapon.type"
+      :weapons="firingArcs[arc]"
       @update:firing-arc="(weapons) => firingArcs[arc] = weapons" />
   </fieldset>
 </template>

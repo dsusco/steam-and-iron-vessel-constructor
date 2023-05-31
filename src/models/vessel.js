@@ -9,6 +9,7 @@ export default class Vessel {
   constructor (klass = '', type = Object.keys(CLASSIFICATIONS[Object.keys(CLASSIFICATIONS)[0]])[0]) {
     this.class = klass
     this.type = type
+    this.eccentricities = []
     this.batteries = BATTERIES.reduce((batteries, battery) => {
       batteries[battery] = new Battery()
 

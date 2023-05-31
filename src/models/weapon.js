@@ -5,5 +5,6 @@ export default class Weapon {
     this.name = name
     this.type = type
     this.rangeBands = []
+    this.eccentricities = []
   }
 }

@@ -1,7 +1,9 @@
 <script setup>
 import { computed } from 'vue'
 
+import ECCENTRICITIES from '@/constants/eccentricities'
 import WEAPON_TYPES from '@/constants/weapon-types'
+import EccentricityComp from '@/components/EccentricityComp.vue'
 import RangeBandComp from '@/components/RangeBandComp.vue'
 import RangeBand from '@/models/range-band'
 
@@ -61,6 +63,16 @@ function removeRangeBand (index) {
         :prevRangeBand="weapon.rangeBands[index - 1]"
         :rangeBand="rangeBand"
         @remove-range-band="removeRangeBand(index)" />
+    </fieldset>
+
+    <fieldset>
+      <legend>Eccentricities</legend>
+
+      <EccentricityComp
+        v-for="(eccentricity, abbr) in ECCENTRICITIES.Weapon" :key="abbr"
+        :abbr="abbr"
+        :eccentricity="eccentricity"
+        :weapon="weapon" />
     </fieldset>
   </fieldset>
 </template>

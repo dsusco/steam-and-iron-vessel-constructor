@@ -4,8 +4,10 @@ import { computed, provide } from 'vue'
 import { ARMOR_RATING_GAMUT, ENGINE_RATING_GAMUT, HULL_RATING_GAMUT, SIZE_CHECKBOXES_GAMUT } from '@/constants/gamuts'
 import CONDITIONS from '@/constants/conditions'
 import CLASSIFICATIONS from '@/constants/classifications'
+import ECCENTRICITIES from '@/constants/eccentricities'
 import BatteryComp from '@/components/BatteryComp.vue'
 import ConditionComp from '@/components/ConditionComp.vue'
+import EccentricityComp from '@/components/EccentricityComp.vue'
 
 const
   props = defineProps({
@@ -43,6 +45,16 @@ const
     </label>
 
     <button type="button" @click="$emit('removeVessel')">×</button>
+
+    <fieldset>
+      <legend>Eccentricities</legend>
+
+      <EccentricityComp
+        v-for="(eccentricity, abbr) in ECCENTRICITIES.Vessel" :key="abbr"
+        :abbr="abbr"
+        :eccentricity="eccentricity"
+        :vessel="vessel" />
+    </fieldset>
 
     <fieldset>
       <legend>Batteries</legend>

@@ -1,4 +1,4 @@
-const WEAPON_TYPES = {
+export default {
   Guns: {
     firingArcs: ['forward', 'astarboardForward', 'astarboardAft', 'aft', 'aportAft', 'aportForward'],
     maximumRange: 18
@@ -8,5 +8,3 @@ const WEAPON_TYPES = {
     maximumRange: 12
   }
 }
-
-export default WEAPON_TYPES

@@ -1,3 +1,1 @@
-const BATTERIES = ['a', 'b', 'c']
-
-export default BATTERIES
+export default ['a', 'b', 'c']

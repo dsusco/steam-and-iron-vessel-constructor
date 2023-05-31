@@ -1,4 +1,4 @@
-const CONDITIONS = {
+export default {
   ready: {
     nextCondition: 'damaged'
   },
@@ -10,5 +10,3 @@ const CONDITIONS = {
     prevCondition: 'damaged'
   }
 }
-
-export default CONDITIONS

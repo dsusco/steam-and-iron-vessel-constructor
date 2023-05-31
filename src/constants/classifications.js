@@ -1,4 +1,4 @@
-const CLASSIFICATIONS = {
+export default {
   Colossal: {
     Aeronef: {
       maximumEngineRating: 6
@@ -22,5 +22,3 @@ const CLASSIFICATIONS = {
     }
   }
 }
-
-export default CLASSIFICATIONS

@@ -1,6 +1,8 @@
 <script setup>
 import { computed } from 'vue'
 
+import * as eccentricityTogglers from '@/helpers/eccentricity-togglers/index'
+
 const
   props = defineProps({
     abbr: { type: String, required: true },
@@ -9,14 +11,15 @@ const
     weapon: Object
   }),
   parent = computed(() => props.weapon === undefined ? props.vessel : props.weapon),
-  disabled = computed(() => {
-    return false
+  enabled = computed(() => {
+    return Object.values(eccentricityTogglers).every((toggler) =>
+      toggler(props.eccentricity, parent.value, props.vessel, props.weapon))
   })
 </script>
 
 <template>
   <label>
-    <input type="checkbox" :disabled="disabled" :value="abbr" v-model="parent.eccentricities">
+    <input type="checkbox" :disabled="!enabled" :value="abbr" v-model="parent.eccentricities">
     {{ eccentricity.name }}
   </label>
 </template>

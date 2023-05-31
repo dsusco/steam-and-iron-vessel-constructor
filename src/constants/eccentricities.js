@@ -21,7 +21,8 @@ export default {
         'Contraptions'
       ],
       prohibitedEccentricities: [
-        'ACrl'
+        'ACrl',
+        'Sub'
       ]
     },
     ACrl: {
@@ -103,13 +104,13 @@ export default {
         {
           type: 'Ironclad',
           requiredEccentricities: [
-            'Sub'
+            'Amph'
           ]
         },
         {
           type: 'Contraptions',
           requiredEccentricities: [
-            'Sub'
+            'Amph'
           ]
         }
       ],

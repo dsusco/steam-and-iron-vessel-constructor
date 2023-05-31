@@ -37,7 +37,7 @@ const
 
     <label>
       Type
-      <select v-model="vessel.type">
+      <select :disabled="vessel.eccentricities.length" v-model="vessel.type">
         <optgroup v-for="(classification, key) in CLASSIFICATIONS" :label="key">
           <option v-for="(type, key) in classification">{{ key }}</option>
         </optgroup>

@@ -12,6 +12,7 @@ const version = appVersion
     <RouterLink to="/">Home</RouterLink>
     <RouterLink to="/vessels">Vessels</RouterLink>
     <RouterLink to="/weapons">Weapons</RouterLink>
+    <RouterLink to="/cards">Cards</RouterLink>
   </nav>
 
   <RouterView id="main" />

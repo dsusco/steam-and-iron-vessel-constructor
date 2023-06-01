@@ -17,7 +17,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: "@import '_baseline';",
+        additionalData: "@import '_baseline';@import '@/assets/mixins.scss';",
         includePaths: [...baseline.includePaths],
       }
     }

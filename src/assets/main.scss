@@ -11,3 +11,10 @@
 
   --vessel_card_gray: #eee;
 }
+
+@media print {
+  #header, #nav, #footer,
+  ._print_hidden {
+    display: none;
+  }
+}

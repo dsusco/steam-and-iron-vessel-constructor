@@ -1,17 +1,40 @@
 <script setup>
+import { reactive, ref } from 'vue'
+
 import VesselCardComp from '@/components/VesselCardComp.vue'
 import { useVesselsStore } from '@/stores/vessels-store'
 
-const vesselsStore = useVesselsStore()
+const
+  selectedVessel = ref(''),
+  cards = reactive([]),
+  vesselsStore = useVesselsStore()
+
+function addCard () {
+  cards.push(selectedVessel.value)
+}
 </script>
 
 <template>
   <main>
-    <VesselCardComp
-      v-for="(vessel, id) in vesselsStore.vessels" :key="id"
-      :vessel="vessel" />
+    <select class="_print_hidden" v-model="selectedVessel">
+      <option v-for="(vessel, id) in vesselsStore.vessels" :key="id" :value="id">{{ vessel.class || id }}</option>
+    </select>
+
+    <button class="_print_hidden" @click="addCard()">Add Card</button>
+
+    <div class="vessel_cards">
+      <VesselCardComp
+        v-for="vesselId in cards" :key="vesselId"
+        :vessel="vesselsStore.vessels[vesselId]" />
+    </div>
   </main>
 </template>
 
 <style lang="scss" scoped>
+.vessel_cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .1875in;
+  width: 11in;
+}
 </style>

@@ -68,7 +68,6 @@ provide('batteries', computed(() => props.vessel.batteries))
   font-size: .9rem;
   height: 3.75in;
   line-height: calc(4/3);
-  margin: .25in;
   overflow: hidden;
   padding: .4rem;
   width: 2.75in;

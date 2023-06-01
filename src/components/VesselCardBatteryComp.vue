@@ -40,20 +40,17 @@ const
   position: relative;
 
   &:first-child {
-    > * {
-      position: relative;
+    > *::before {
+      @include _vessel_card_header_text();
 
-      &::before {
-        @include _vessel_card_header_text();
-
-        position: absolute;
-        inset: -1.2rem 0 auto;
-        z-index: 1;
-      }
+      position: absolute;
+      inset: -1.2rem 0 auto;
+      z-index: 1;
     }
 
     > .name::before {
       content: 'Weapon';
+      left: 1.2rem;
     }
 
     > .range_band._1::before {

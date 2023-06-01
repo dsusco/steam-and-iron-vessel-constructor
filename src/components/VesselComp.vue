@@ -11,6 +11,7 @@ import EccentricityComp from '@/components/EccentricityComp.vue'
 
 const
   props = defineProps({
+    id: { type: String, required: true },
     vessel: { type: Object, required: true }
   }),
   classification = computed(() =>
@@ -27,8 +28,8 @@ const
 </script>
 
 <template>
-  <fieldset>
-    <legend>{{ vessel.class }}</legend>
+  <fieldset class="vessel">
+    <legend>{{ vessel.class || id }}</legend>
 
     <label>
       Class
@@ -46,7 +47,7 @@ const
 
     <button type="button" @click="$emit('removeVessel')">×</button>
 
-    <fieldset>
+    <fieldset class="vessel_eccentricities">
       <legend>Eccentricities</legend>
 
       <EccentricityComp
@@ -113,4 +114,15 @@ const
 </template>
 
 <style lang="scss" scoped>
+.vessel:not(.active) {
+  > *:first-child ~ * {
+    @include sr_only();
+  }
+}
+
+.vessel_eccentricities {
+  > label {
+    padding: 0 1em;
+  }
+}
 </style>

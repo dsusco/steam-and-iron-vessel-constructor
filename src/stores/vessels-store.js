@@ -9,7 +9,11 @@ export const useVesselsStore = defineStore('vesselStore', () => {
   const vessels = ref(useLocalStorage('vesselStore', {}))
 
   function addVessel () {
-    vessels.value[nanoid()] = new Vessel()
+    const id = nanoid()
+
+    vessels.value[id] = new Vessel()
+
+    return id
   }
 
   function removeVessel (id) {

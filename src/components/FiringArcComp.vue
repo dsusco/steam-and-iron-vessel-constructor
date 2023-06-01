@@ -22,7 +22,7 @@ const
 </script>
 
 <template>
-  <label>
+  <label :class="`arc _${label}`">
     {{ label }}
     <select :value="weapons" @change="$emit('update:firingArc', $event.target.value)">
       <option v-for="n in firingArcGamut" :key="n">{{ n }}</option>

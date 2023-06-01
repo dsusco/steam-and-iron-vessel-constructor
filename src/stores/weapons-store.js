@@ -9,7 +9,11 @@ export const useWeaponsStore = defineStore('weaponStore', () => {
   const weapons = ref(useLocalStorage('weaponStore', {}))
 
   function addWeapon () {
-    weapons.value[nanoid()] = new Weapon()
+    const id = nanoid()
+
+    weapons.value[id] = new Weapon()
+
+    return id
   }
 
   function removeWeapon (id) {

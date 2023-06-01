@@ -9,6 +9,7 @@ import RangeBand from '@/models/range-band'
 
 const
   props = defineProps({
+    id: { type: String, required: true },
     weapon: { type: Object, required: true }
   }),
   nextMinimumRange = computed(() => {
@@ -34,8 +35,8 @@ function removeRangeBand (index) {
 </script>
 
 <template>
-  <fieldset>
-    <legend>{{ weapon.name }}</legend>
+  <fieldset class="weapon">
+    <legend>{{ weapon.name || id }}</legend>
 
     <label>
       Name
@@ -65,7 +66,7 @@ function removeRangeBand (index) {
         @remove-range-band="removeRangeBand(index)" />
     </fieldset>
 
-    <fieldset>
+    <fieldset class="weapon_eccentricities">
       <legend>Eccentricities</legend>
 
       <EccentricityComp
@@ -78,4 +79,15 @@ function removeRangeBand (index) {
 </template>
 
 <style lang="scss" scoped>
+.weapon:not(.active) {
+  > *:first-child ~ * {
+    @include sr_only();
+  }
+}
+
+.weapon_eccentricities {
+  > label {
+    padding: 0 1em;
+  }
+}
 </style>

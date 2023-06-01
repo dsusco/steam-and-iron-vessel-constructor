@@ -12,6 +12,10 @@ const
 function addCard () {
   cards.push(selectedVessel.value)
 }
+
+function removeCard (index) {
+  cards.splice(+index, 1)
+}
 </script>
 
 <template>
@@ -24,8 +28,9 @@ function addCard () {
 
     <div class="vessel_cards">
       <VesselCardComp
-        v-for="vesselId in cards" :key="vesselId"
-        :vessel="vesselsStore.vessels[vesselId]" />
+        v-for="(vesselId, index) in cards" :key="vesselId"
+        :vessel="vesselsStore.vessels[vesselId]"
+        @click="removeCard(index)" />
     </div>
   </main>
 </template>

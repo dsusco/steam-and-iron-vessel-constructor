@@ -41,12 +41,20 @@ provide('batteries', computed(() => props.vessel.batteries))
         :label="key" />
     </div>
 
-    <div class="vessel_conditions">
+    <div class="vessel_conditions" v-if="isColossal">
       <VesselCardConditionComp
         v-for="(condition, key) in vessel.conditions" :key="key"
         :condition="condition"
         :label="key"
         :vesselHullRating="+vessel.hullRating" />
+    </div>
+
+    <div class="vessel_values" v-if="isSmallCraft">
+      <div class="sizeCheckboxes">
+        <span v-for="n in +vessel.sizeCheckboxes">□ </span>
+      </div>
+      <div class="engineRating">{{ vessel.engineRating }}</div>
+      <div class="armorRating">{{ vessel.armorRating }}</div>
     </div>
 
     <div class="vessel_record">
@@ -66,7 +74,7 @@ provide('batteries', computed(() => props.vessel.batteries))
   background: var(--vessel_card_background);
   color: var(--vessel_card_color);
   font-size: .9rem;
-  height: 3.75in;
+  max-height: 3.75in;
   line-height: calc(4/3);
   overflow: hidden;
   padding: .4rem;
@@ -112,11 +120,61 @@ provide('batteries', computed(() => props.vessel.batteries))
 }
 
 .vessel_batteries,
-.vessel_conditions {
+.vessel_conditions,
+.vessel_values {
   @include after_border(var(--vessel_card_border_color), 1.2rem .1rem .1rem 1.2rem);
 
   margin-bottom: var(--vessel_card_margin);
   padding-top: 1.2rem;
+}
+
+.vessel_values {
+  display: grid;
+  grid-template-columns: repeat(3, 3fr);
+  grid-template-areas:
+    'sizeCheckboxes engineRating armorRating';
+  position: relative;
+  text-align: center;
+
+  &::after {
+    border-left-width: .1rem;
+  }
+
+  > * {
+    position: relative;
+
+    &::before {
+      @include _vessel_card_header_text();
+
+      position: absolute;
+      inset: -1.2rem 0 auto;
+      z-index: 1;
+    }
+  }
+
+  > .sizeCheckboxes {
+    grid-area: sizeCheckboxes;
+
+    &::before {
+      content: 'Size';
+    }
+  }
+
+  > .engineRating {
+    grid-area: engineRating;
+
+    &::before {
+      content: 'Engine';
+    }
+  }
+
+  > .armorRating {
+    grid-area: armorRating;
+
+    &::before {
+      content: 'Armor';
+    }
+  }
 }
 
 .vessel_record {

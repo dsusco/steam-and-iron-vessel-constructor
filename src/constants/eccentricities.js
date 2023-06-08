@@ -129,6 +129,12 @@ export default {
     }
   },
   Weapon: {
+    A: {
+      name: 'Accurate'
+    },
+    B: {
+      name: 'Bisectional'
+    },
     D: {
       name: 'Destructive',
       prohibitedEccentricities: [
@@ -168,8 +174,26 @@ export default {
     I: {
       name: 'Immaterial'
     },
+    N: {
+      name: 'Natatorial'
+    },
     P: {
-      name: 'Precise'
+      name: 'Plunging',
+      prohibitedEccentricities: [
+        'R'
+      ],
+      requiredVesselTypes: [
+        'Guns'
+      ]
+    },
+    R: {
+      name: 'Rising',
+      prohibitedEccentricities: [
+        'P'
+      ],
+      requiredVesselTypes: [
+        'Guns'
+      ]
     },
     U: {
       name: 'Unerring',
@@ -182,6 +206,9 @@ export default {
       prohibitedEccentricities: [
         'U'
       ]
+    },
+    V: {
+      name: 'Volitant'
     }
   }
 }

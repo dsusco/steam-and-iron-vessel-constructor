@@ -45,7 +45,7 @@ function removeRangeBand (index) {
 
     <label>
       Type
-      <select :disabled="weapon.rangeBands.length" v-model="weapon.type">
+      <select :disabled="weapon.rangeBands.length || weapon.eccentricities.length" v-model="weapon.type">
         <option v-for="(weaponType, key) in WEAPON_TYPES">{{ key }}</option>
       </select>
     </label>

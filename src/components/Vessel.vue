@@ -1,30 +1,28 @@
 <script setup>
-import { computed, provide } from 'vue'
+import { computed, provide, toRefs } from 'vue'
 
 import { ARMOR_RATING_GAMUT, ENGINE_RATING_GAMUT, HULL_RATING_GAMUT, SIZE_CHECKBOXES_GAMUT } from '@/constants/gamuts'
 import CONDITIONS from '@/constants/conditions'
 import CLASSIFICATIONS from '@/constants/classifications'
 import ECCENTRICITIES from '@/constants/eccentricities'
+import Eccentricity from '@/components/Eccentricity.vue'
 import VesselBattery from '@/components/VesselBattery.vue'
 import VesselCondition from '@/components/VesselCondition.vue'
-import Eccentricity from '@/components/Eccentricity.vue'
+import { useClassification } from '@/composables/classification'
 
 const
   props = defineProps({
     id: { type: String, required: true },
     vessel: { type: Object, required: true }
   }),
-  classification = computed(() =>
-    Object.keys(CLASSIFICATIONS).find((c) =>
-      Object.keys(CLASSIFICATIONS[c]).includes(props.vessel.type))),
-  isColossal = computed(() => Object.keys(CLASSIFICATIONS.Colossal).includes(props.vessel.type)),
-  isSmallCraft = computed(() => Object.keys(CLASSIFICATIONS['Small Craft']).includes(props.vessel.type)),
+  { type, batteries } = toRefs(props.vessel),
+  { classification, isColossal, isSmallCraft } = useClassification(type),
   smallCraftEngineRatingGamut = computed(() =>
     ENGINE_RATING_GAMUT.slice(
       0,
-      CLASSIFICATIONS[classification.value][props.vessel.type].maximumEngineRating + 1))
+      CLASSIFICATIONS[classification.value][type.value].maximumEngineRating + 1))
 
-  provide('batteries', computed(() => props.vessel.batteries))
+  provide('batteries', batteries)
 </script>
 
 <template>
@@ -38,7 +36,7 @@ const
 
     <label>
       Type
-      <select :disabled="vessel.eccentricities.length" v-model="vessel.type">
+      <select :disabled="vessel.eccentricities.length" v-model="type">
         <optgroup v-for="(classification, key) in CLASSIFICATIONS" :label="key">
           <option v-for="(type, key) in classification">{{ key }}</option>
         </optgroup>
@@ -61,7 +59,7 @@ const
       <legend>Batteries</legend>
 
       <VesselBattery
-        v-for="(battery, key) in vessel.batteries" :key="key"
+        v-for="(battery, key) in batteries" :key="key"
         :battery="battery"
         :label="key" />
     </fieldset>
@@ -80,7 +78,7 @@ const
         v-for="(condition, key) in CONDITIONS"
         :condition="vessel.conditions[key]"
         :label="key"
-        :maximumVesselEngineRating="CLASSIFICATIONS[classification][vessel.type].maximumEngineRating"
+        :maximumVesselEngineRating="CLASSIFICATIONS[classification][type].maximumEngineRating"
         :nextCondition="vessel.conditions[condition.nextCondition]"
         :prevCondition="vessel.conditions[condition.prevCondition]"
         :vesselHullRating="+vessel.hullRating" />

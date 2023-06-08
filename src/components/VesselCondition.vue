@@ -1,8 +1,9 @@
 <script setup>
-import { computed, provide } from 'vue'
+import { computed, provide, toRefs } from 'vue'
 
 import { ARMOR_RATING_GAMUT, ENGINE_RATING_GAMUT } from '@/constants/gamuts'
 import VesselConditionFiringDiagram from '@/components/VesselConditionFiringDiagram.vue'
+import { useHullCheckboxes } from '@/composables/hull-checkboxes'
 
 const
   props = defineProps({
@@ -13,33 +14,25 @@ const
     prevCondition: Object,
     vesselHullRating: { type: Number, required: true }
   }),
+  { nextCondition, prevCondition, vesselHullRating } = toRefs(props),
   armorRatingGamut = computed(() => {
     const
-      gamutStart = props.nextCondition ? ARMOR_RATING_GAMUT.indexOf(props.nextCondition.armorRating) : 0,
-      gamutEnd = props.prevCondition ? ARMOR_RATING_GAMUT.indexOf(props.prevCondition.armorRating) + 1 : ARMOR_RATING_GAMUT.length
+      gamutStart = nextCondition.value ? ARMOR_RATING_GAMUT.indexOf(nextCondition.value.armorRating) : 0,
+      gamutEnd = prevCondition.value ? ARMOR_RATING_GAMUT.indexOf(prevCondition.value.armorRating) + 1 : ARMOR_RATING_GAMUT.length
 
     return ARMOR_RATING_GAMUT.slice(gamutStart, gamutEnd)
   }),
   engineRatingGamut = computed(() => {
     const
-      gamutStart = props.nextCondition ? ENGINE_RATING_GAMUT.indexOf(props.nextCondition.engineRating) : 0,
-      gamutEnd = props.prevCondition ? ENGINE_RATING_GAMUT.indexOf(props.prevCondition.engineRating) : props.maximumVesselEngineRating
+      gamutStart = nextCondition.value ? ENGINE_RATING_GAMUT.indexOf(nextCondition.value.engineRating) : 0,
+      gamutEnd = prevCondition.value ? ENGINE_RATING_GAMUT.indexOf(prevCondition.value.engineRating) : props.maximumVesselEngineRating
 
     return ENGINE_RATING_GAMUT.slice(gamutStart, gamutEnd + 1)
   }),
-  hullCheckboxes = computed(() => {
-    const
-      ready = Math.ceil(props.vesselHullRating / 3),
-      damaged = Math.ceil((props.vesselHullRating - ready) / 2),
-      crippled = props.vesselHullRating - ready - damaged
+  { hullCheckboxes } = useHullCheckboxes(vesselHullRating, props.label)
 
-    if (props.label === 'ready') return ready
-    if (props.label === 'damaged') return damaged
-    if (props.label === 'crippled') return crippled
-  })
-
-  provide('nextCondition', computed(() => props.nextCondition))
-  provide('prevCondition', computed(() => props.prevCondition))
+  provide('nextCondition', nextCondition)
+  provide('prevCondition', prevCondition)
 </script>
 
 <template>

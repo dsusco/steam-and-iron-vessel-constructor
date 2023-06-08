@@ -1,7 +1,8 @@
 <script setup>
-import { computed, provide } from 'vue'
+import { toRefs } from 'vue'
 
 import CardConditionFiringDiagram from '@/components/CardConditionFiringDiagram.vue'
+import { useHullCheckboxes } from '@/composables/hull-checkboxes'
 
 const
   props = defineProps({
@@ -9,14 +10,8 @@ const
     label: { type: String, required: true },
     vesselHullRating: { type: Number, required: true }
   }),
-  hullCheckboxes = computed(() => {
-    const
-      ready = Math.ceil(props.vesselHullRating / 3),
-      damaged = Math.ceil((props.vesselHullRating - ready) / 2),
-      crippled = props.vesselHullRating - ready - damaged
-
-    return eval(props.label)
-  })
+  { vesselHullRating } = toRefs(props),
+  { hullCheckboxes } = useHullCheckboxes(vesselHullRating, props.label)
 </script>
 
 <template>

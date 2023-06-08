@@ -1,23 +1,19 @@
 <script setup>
-import { computed, provide } from 'vue'
+import { provide, toRefs } from 'vue'
 
-import CLASSIFICATIONS from '@/constants/classifications'
 import ECCENTRICITIES from '@/constants/eccentricities'
 import CardBattery from '@/components/CardBattery.vue'
 import CardCondition from '@/components/CardCondition.vue'
+import { useClassification } from '@/composables/classification'
 
 const
   props = defineProps({
     vessel: { type: Object, required: true }
   }),
-  classification = computed(() =>
-    Object.keys(CLASSIFICATIONS).find((c) =>
-      Object.keys(CLASSIFICATIONS[c]).includes(props.vessel.type))),
-  isAerovessel = computed(() => props.vessel.type === 'Aeronef' || props.vessel.type === 'Aeroplanes'),
-  isColossal = computed(() => Object.keys(CLASSIFICATIONS.Colossal).includes(props.vessel.type)),
-  isSmallCraft = computed(() => Object.keys(CLASSIFICATIONS['Small Craft']).includes(props.vessel.type))
+  { type, batteries } = toRefs(props.vessel),
+  { classification, isColossal, isSmallCraft, isAerovessel } = useClassification(type)
 
-provide('batteries', computed(() => props.vessel.batteries))
+provide('batteries', batteries)
 </script>
 
 <template>
@@ -25,7 +21,7 @@ provide('batteries', computed(() => props.vessel.batteries))
     <div class="vessel_information">
       <div class="class">{{ vessel.class }}</div>
 
-      <div class="type">{{ vessel.type }}</div>
+      <div class="type">{{ type }}</div>
 
       <div class="points">0</div>
 
@@ -36,7 +32,7 @@ provide('batteries', computed(() => props.vessel.batteries))
 
     <div class="vessel_batteries">
       <CardBattery
-        v-for="(battery, key) in vessel.batteries" :key="key"
+        v-for="(battery, key) in batteries" :key="key"
         :battery="battery"
         :label="key" />
     </div>

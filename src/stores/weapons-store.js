@@ -17,7 +17,7 @@ export const useWeaponsStore = defineStore('weaponStore', () => {
   }
 
   function removeWeapon (id) {
-    delete weapons.value[id]
+    return delete weapons.value[id]
   }
 
   return { weapons, addWeapon, removeWeapon }

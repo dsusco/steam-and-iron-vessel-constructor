@@ -2,7 +2,7 @@
 import { computed, provide } from 'vue'
 
 import { ARMOR_RATING_GAMUT, ENGINE_RATING_GAMUT } from '@/constants/gamuts'
-import FiringDiagramComp from '@/components/FiringDiagramComp.vue'
+import VesselConditionFiringDiagram from '@/components/VesselConditionFiringDiagram.vue'
 
 const
   props = defineProps({
@@ -33,7 +33,9 @@ const
       damaged = Math.ceil((props.vesselHullRating - ready) / 2),
       crippled = props.vesselHullRating - ready - damaged
 
-    return eval(props.label)
+    if (props.label === 'ready') return ready
+    if (props.label === 'damaged') return damaged
+    if (props.label === 'crippled') return crippled
   })
 
   provide('nextCondition', computed(() => props.nextCondition))
@@ -66,7 +68,7 @@ const
     <fieldset>
       <legend>Firing Arcs</legend>
 
-      <FiringDiagramComp
+      <VesselConditionFiringDiagram
         v-for="(firingArcs, key) in condition.firingArcs" :key="key"
         :firingArcs="firingArcs"
         :label="key" />

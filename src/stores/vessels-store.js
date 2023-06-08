@@ -17,7 +17,7 @@ export const useVesselsStore = defineStore('vesselStore', () => {
   }
 
   function removeVessel (id) {
-    delete vessels.value[id]
+    return delete vessels.value[id]
   }
 
   return { vessels, addVessel, removeVessel }

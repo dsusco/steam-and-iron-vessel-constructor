@@ -8,7 +8,6 @@ const packageJSON = JSON.parse(fs.readFileSync('./package.json'))
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/steam-and-iron-vessel-constructor/',
   plugins: [vue()],
   resolve: {
     alias: {

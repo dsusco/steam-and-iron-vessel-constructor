@@ -5,9 +5,9 @@ import { ARMOR_RATING_GAMUT, ENGINE_RATING_GAMUT, HULL_RATING_GAMUT, SIZE_CHECKB
 import CONDITIONS from '@/constants/conditions'
 import CLASSIFICATIONS from '@/constants/classifications'
 import ECCENTRICITIES from '@/constants/eccentricities'
-import BatteryComp from '@/components/BatteryComp.vue'
-import ConditionComp from '@/components/ConditionComp.vue'
-import EccentricityComp from '@/components/EccentricityComp.vue'
+import VesselBattery from '@/components/VesselBattery.vue'
+import VesselCondition from '@/components/VesselCondition.vue'
+import Eccentricity from '@/components/Eccentricity.vue'
 
 const
   props = defineProps({
@@ -50,7 +50,7 @@ const
     <fieldset class="vessel_eccentricities">
       <legend>Eccentricities</legend>
 
-      <EccentricityComp
+      <Eccentricity
         v-for="(eccentricity, abbr) in ECCENTRICITIES.Vessel" :key="abbr"
         :abbr="abbr"
         :eccentricity="eccentricity"
@@ -60,7 +60,7 @@ const
     <fieldset>
       <legend>Batteries</legend>
 
-      <BatteryComp
+      <VesselBattery
         v-for="(battery, key) in vessel.batteries" :key="key"
         :battery="battery"
         :label="key" />
@@ -76,7 +76,7 @@ const
         </select>
       </label>
 
-      <ConditionComp
+      <VesselCondition
         v-for="(condition, key) in CONDITIONS"
         :condition="vessel.conditions[key]"
         :label="key"
@@ -114,12 +114,6 @@ const
 </template>
 
 <style lang="scss" scoped>
-.vessel:not(.active) {
-  > *:first-child ~ * {
-    @include sr_only();
-  }
-}
-
 .vessel_eccentricities {
   > label {
     padding: 0 1em;

@@ -3,8 +3,8 @@ import { computed, provide } from 'vue'
 
 import CLASSIFICATIONS from '@/constants/classifications'
 import ECCENTRICITIES from '@/constants/eccentricities'
-import VesselCardBatteryComp from '@/components/VesselCardBatteryComp.vue'
-import VesselCardConditionComp from '@/components/VesselCardConditionComp.vue'
+import CardBattery from '@/components/CardBattery.vue'
+import CardCondition from '@/components/CardCondition.vue'
 
 const
   props = defineProps({
@@ -35,14 +35,14 @@ provide('batteries', computed(() => props.vessel.batteries))
     </div>
 
     <div class="vessel_batteries">
-      <VesselCardBatteryComp
+      <CardBattery
         v-for="(battery, key) in vessel.batteries" :key="key"
         :battery="battery"
         :label="key" />
     </div>
 
     <div class="vessel_conditions" v-if="isColossal">
-      <VesselCardConditionComp
+      <CardCondition
         v-for="(condition, key) in vessel.conditions" :key="key"
         :condition="condition"
         :label="key"

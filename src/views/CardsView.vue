@@ -1,7 +1,7 @@
 <script setup>
 import { reactive, ref } from 'vue'
 
-import VesselCardComp from '@/components/VesselCardComp.vue'
+import Card from '@/components/Card.vue'
 import { useVesselsStore } from '@/stores/vessels-store'
 
 const
@@ -27,7 +27,7 @@ function removeCard (index) {
     <button class="_print_hidden" @click="addCard()">Add Card</button>
 
     <div class="vessel_cards">
-      <VesselCardComp
+      <Card
         v-for="(vesselId, index) in cards" :key="vesselId"
         :vessel="vesselsStore.vessels[vesselId]"
         @click="removeCard(index)" />

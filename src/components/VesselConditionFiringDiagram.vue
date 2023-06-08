@@ -2,7 +2,7 @@
 import { computed, inject } from 'vue'
 
 import WEAPON_TYPES from '@/constants/weapon-types'
-import FiringArcComp from '@/components/FiringArcComp.vue'
+import VesselConditionFiringDiagramArc from '@/components/VesselConditionFiringDiagramArc.vue'
 import { useWeaponsStore } from '@/stores/weapons-store'
 
 const
@@ -18,7 +18,7 @@ const
   <fieldset class="firing_diagram" v-if="weapon">
     <legend>{{ label }} ({{ weapon.name }})</legend>
 
-    <FiringArcComp
+    <VesselConditionFiringDiagramArc
       v-for="arc in WEAPON_TYPES[weapon.type].firingArcs"
       :battery="label"
       :label="arc"

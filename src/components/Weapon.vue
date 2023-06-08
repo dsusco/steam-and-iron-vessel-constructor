@@ -3,8 +3,8 @@ import { computed } from 'vue'
 
 import ECCENTRICITIES from '@/constants/eccentricities'
 import WEAPON_TYPES from '@/constants/weapon-types'
-import EccentricityComp from '@/components/EccentricityComp.vue'
-import RangeBandComp from '@/components/RangeBandComp.vue'
+import Eccentricity from '@/components/Eccentricity.vue'
+import WeaponRangeBand from '@/components/WeaponRangeBand.vue'
 import RangeBand from '@/models/range-band'
 
 const
@@ -57,7 +57,7 @@ function removeRangeBand (index) {
 
       <button :disabled="!nextMinimumRange" @click="addRangeBand()">Add Range Band</button>
 
-      <RangeBandComp
+      <WeaponRangeBand
         v-for="(rangeBand, index) in weapon.rangeBands" :key="index"
         :maximumWeaponRange="WEAPON_TYPES[weapon.type].maximumRange"
         :nextRangeBand="weapon.rangeBands[index + 1]"
@@ -69,7 +69,7 @@ function removeRangeBand (index) {
     <fieldset class="weapon_eccentricities">
       <legend>Eccentricities</legend>
 
-      <EccentricityComp
+      <Eccentricity
         v-for="(eccentricity, abbr) in ECCENTRICITIES.Weapon" :key="abbr"
         :abbr="abbr"
         :eccentricity="eccentricity"
@@ -79,12 +79,6 @@ function removeRangeBand (index) {
 </template>
 
 <style lang="scss" scoped>
-.weapon:not(.active) {
-  > *:first-child ~ * {
-    @include sr_only();
-  }
-}
-
 .weapon_eccentricities {
   > label {
     padding: 0 1em;

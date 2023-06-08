@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 
 import { ACCURACY_GAMUT, DAMAGE_GAMUT, PENETRATION_GAMUT, RANGE_GAMUT, RATE_OF_FIRE_GAMUT } from '@/constants/gamuts'
-import WEAPON_TYPES from '@/constants/weapon-types'
 import { useWeaponsStore } from '@/stores/weapons-store'
 
 const

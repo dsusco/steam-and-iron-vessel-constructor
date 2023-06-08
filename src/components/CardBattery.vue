@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 
 import ECCENTRICITIES from '@/constants/eccentricities'
-import VesselCardRangeBandComp from '@/components/VesselCardRangeBandComp.vue'
+import CardBatteryRangeBand from '@/components/CardBatteryRangeBand.vue'
 import { useWeaponsStore } from '@/stores/weapons-store'
 
 const
@@ -18,7 +18,7 @@ const
   <div :class="`vessel_battery _${label}`" :data-battery="label" v-if="weapon">
     <div class="name">{{ weapon.name }}</div>
 
-    <VesselCardRangeBandComp
+    <CardBatteryRangeBand
       v-for="(rangeBand, index) in weapon.rangeBands" :key="index"
       :index="index"
       :rangeBand="rangeBand" />

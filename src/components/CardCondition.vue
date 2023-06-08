@@ -1,7 +1,7 @@
 <script setup>
 import { computed, provide } from 'vue'
 
-import VesselCardFiringDiagramComp from '@/components/VesselCardFiringDiagramComp.vue'
+import CardConditionFiringDiagram from '@/components/CardConditionFiringDiagram.vue'
 
 const
   props = defineProps({
@@ -29,7 +29,7 @@ const
 
     <div class="armorRating">{{ condition.armorRating }}</div>
 
-    <VesselCardFiringDiagramComp
+    <CardConditionFiringDiagram
       v-for="(firingArcs, key) in condition.firingArcs" :key="key"
       :firingArcs="firingArcs"
       :label="key" />

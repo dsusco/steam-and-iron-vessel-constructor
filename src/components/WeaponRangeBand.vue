@@ -1,32 +1,39 @@
 <script setup>
-import { computed } from 'vue'
+import { toRef } from 'vue'
 
-import { ACCURACY_GAMUT, DAMAGE_GAMUT, PENETRATION_GAMUT, RANGE_GAMUT, RATE_OF_FIRE_GAMUT } from '@/constants/gamuts'
+import { ACCURACY_GAMUT, DAMAGE_GAMUT, PENETRATION_GAMUT, RATE_OF_FIRE_GAMUT } from '@/constants/gamuts'
+import { useRangeGamuts } from '@/composables/range-gamuts'
 import { useWeaponsStore } from '@/stores/weapons-store'
 
 const
+  emit = defineEmits([
+    'remove:rangeBand',
+    'update:minimumRange',
+    'update:maximumRange',
+    'update:rateOfFire',
+    'update:accuracy',
+    'update:damage',
+    'update:penetration'
+  ]),
   props = defineProps({
+    index: { type: Number, required: true },
     maximumWeaponRange: { type: Number, required: true },
     nextRangeBand: Object,
     prevRangeBand: Object,
-    rangeBand: { type: Object, required: true }
+    minimumRange: { type: String, required: true },
+    maximumRange: { type: String, required: true },
+    rateOfFire: { type: String, required: true },
+    accuracy: { type: String, required: true },
+    damage: { type: String, required: true },
+    penetration: { type: String, required: true }
   }),
-  maximumRangeGamut = computed(() => {
-    const gamutEnd = props.nextRangeBand ? +props.nextRangeBand.minimumRange - 1 : props.maximumWeaponRange
-
-    return Array.from(
-      { length: Math.abs(gamutEnd - +props.rangeBand.minimumRange) + 1 },
-      (_, i) => i + +props.rangeBand.minimumRange
-    )
-  }),
-  minimumRangeGamut = computed(() => {
-    const gamutStart = props.prevRangeBand ? +props.prevRangeBand.maximumRange + 1 : +RANGE_GAMUT[0]
-
-    return Array.from(
-      { length: Math.abs(+props.rangeBand.maximumRange - gamutStart) + 1 },
-      (_, i) => i + gamutStart
-    )
-  })
+  { maximumRangeGamut, minimumRangeGamut } = useRangeGamuts(
+    toRef(props, 'maximumWeaponRange'),
+    toRef(props, 'nextRangeBand'),
+    toRef(props, 'prevRangeBand'),
+    toRef(props, 'minimumRange'),
+    toRef(props, 'maximumRange')
+  )
 </script>
 
 <template>
@@ -35,47 +42,59 @@ const
 
     <label>
       Minimum Range
-      <select v-model="rangeBand.minimumRange">
+      <select
+        :value="minimumRange"
+        @change="emit('update:minimumRange', $event.target.value)">
         <option v-for="n in minimumRangeGamut">{{ n }}</option>
       </select>
     </label>
 
     <label>
       Maximum Range
-      <select v-model="rangeBand.maximumRange">
+      <select
+        :value="maximumRange"
+        @change="emit('update:maximumRange', $event.target.value)">
         <option v-for="n in maximumRangeGamut">{{ n }}</option>
       </select>
     </label>
 
     <label>
       Rate of Fire
-      <select v-model="rangeBand.rateOfFire">
+      <select
+        :value="rateOfFire"
+        @change="emit('update:rateOfFire', $event.target.value)">
         <option v-for="n in RATE_OF_FIRE_GAMUT">{{ n }}</option>
       </select>
     </label>
 
     <label>
       Accuracy
-      <select v-model="rangeBand.accuracy">
+      <select
+        :value="accuracy"
+        @change="emit('update:accuracy', $event.target.value)">
         <option v-for="n in ACCURACY_GAMUT">{{ n }}</option>
       </select>
     </label>
 
     <label>
       Damage
-      <select v-model="rangeBand.damage">
+      <select
+        :value="damage"
+        @change="emit('update:damage', $event.target.value)">
         <option v-for="n in DAMAGE_GAMUT">{{ n }}</option>
       </select>
     </label>
 
     <label>
       Penetration
-      <select v-model="rangeBand.penetration">
+      <select
+        :value="penetration"
+        @change="emit('update:penetration', $event.target.value)">
         <option v-for="n in PENETRATION_GAMUT">{{ n }}</option>
       </select>
     </label>
 
-    <button type="button" @click="$emit('removeRangeBand')">×</button>
+    <button type="button" @click="emit('remove:rangeBand', index)">×</button>
   </fieldset>
 </template>
 

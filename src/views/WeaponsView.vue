@@ -15,8 +15,11 @@ const
     <Weapon
       v-for="(weapon, id) in weaponsStore.weapons" :key="id"
       :id="id"
-      :weapon="weapon"
-      @remove-weapon="weaponsStore.removeWeapon(id)" />
+      v-model:name="weapon.name"
+      v-model:type="weapon.type"
+      v-model:rangeBands="weapon.rangeBands"
+      v-model:eccentricities="weapon.eccentricities"
+      @remove:weapon="(id) => weaponsStore.removeWeapon(id)" />
   </main>
 </template>
 

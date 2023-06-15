@@ -14,7 +14,7 @@ export default {
     },
     Amph: {
       name: 'Amphibious',
-      requiredVesselTypes: [
+      requiredTypes: [
         'Aquanef',
         'Aquacraft',
         'Ironclad',
@@ -27,7 +27,7 @@ export default {
     },
     ACrl: {
       name: 'Aquacrawler',
-      requiredVesselTypes: [
+      requiredTypes: [
         'Ironclad',
         'Contraptions'
       ],
@@ -98,7 +98,7 @@ export default {
     },
     Sub: {
       name: 'Subaqua',
-      requiredVesselTypes: [
+      requiredTypes: [
         'Aquanef',
         'Aquacraft',
         {
@@ -182,7 +182,7 @@ export default {
       prohibitedEccentricities: [
         'R'
       ],
-      requiredVesselTypes: [
+      requiredTypes: [
         'Guns'
       ]
     },
@@ -191,7 +191,7 @@ export default {
       prohibitedEccentricities: [
         'P'
       ],
-      requiredVesselTypes: [
+      requiredTypes: [
         'Guns'
       ]
     },

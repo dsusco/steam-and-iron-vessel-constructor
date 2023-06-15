@@ -1,8 +1,6 @@
-export default function (eccentricity, parent, vessel = null, weapon = null) {
-  if (!eccentricity.requiredEccentricities) {
-    return true
-  }
+export default function (eccentricity, parent) {
+  if (!eccentricity.requiredEccentricities) return true
 
   return eccentricity.requiredEccentricities.find((requiredEccentricity) =>
-    parent.eccentricities.includes(requiredEccentricity)) !== undefined
+    parent.eccentricities.value.includes(requiredEccentricity)) !== undefined
 }

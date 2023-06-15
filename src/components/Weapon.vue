@@ -1,19 +1,18 @@
 <script setup>
-import { toRef } from 'vue'
+import { toRef, toRefs } from 'vue'
 
 import ECCENTRICITIES from '@/constants/eccentricities'
 import WEAPON_TYPES from '@/constants/weapon-types'
 import Eccentricity from '@/components/Eccentricity.vue'
 import WeaponRangeBand from '@/components/WeaponRangeBand.vue'
+import { useEccentricities } from '@/composables/eccentricities'
 import { useRangeBands } from '@/composables/range-bands'
 
 const
   emit = defineEmits([
     'remove:weapon',
     'update:name',
-    'update:type',
-    'update:rangeBands',
-    'update:eccentricities'
+    'update:type'
   ]),
   props = defineProps({
     id: { type: String, required: true },
@@ -22,11 +21,14 @@ const
     rangeBands: { type: Array, required: true },
     eccentricities: { type: Array, required: true }
   }),
+  { enabledEccentricities, toggleEccentricity } = useEccentricities(
+    toRefs(props),
+    ECCENTRICITIES.Weapon
+  ),
   { addRangeBand, nextMinimumRange, removeRangeBand } = useRangeBands(
     toRef(props, 'type'),
     toRef(props, 'rangeBands')
   )
-
 </script>
 
 <template>
@@ -78,8 +80,10 @@ const
       <Eccentricity
         v-for="(eccentricity, abbr) in ECCENTRICITIES.Weapon" :key="abbr"
         :abbr="abbr"
+        :checked="eccentricities.includes(abbr)"
+        :disabled="!enabledEccentricities[abbr]"
         :eccentricity="eccentricity"
-        :weapon="weapon" />
+        @update:eccentricity="(value, checked) => toggleEccentricity(value, checked)" />
     </fieldset>
   </fieldset>
 </template>

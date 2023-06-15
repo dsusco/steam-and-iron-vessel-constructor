@@ -1,25 +1,23 @@
 <script setup>
-import { computed } from 'vue'
-
-import * as eccentricityTogglers from '@/helpers/eccentricity-togglers/index'
-
 const
+  emit = defineEmits([
+    'update:eccentricity'
+  ]),
   props = defineProps({
     abbr: { type: String, required: true },
-    eccentricity: { type: Object, required: true },
-    vessel: Object,
-    weapon: Object
-  }),
-  parent = computed(() => props.weapon === undefined ? props.vessel : props.weapon),
-  enabled = computed(() => {
-    return Object.values(eccentricityTogglers).every((toggler) =>
-      toggler(props.eccentricity, parent.value, props.vessel, props.weapon))
+    checked: { type: Boolean, required: true },
+    disabled: { type: Boolean, required: true },
+    eccentricity: { type: Object, required: true }
   })
 </script>
 
 <template>
   <label>
-    <input type="checkbox" :disabled="!enabled" :value="abbr" v-model="parent.eccentricities">
+    <input type="checkbox"
+      :checked="checked"
+      :disabled="disabled"
+      :value="abbr"
+      @change="emit('update:eccentricity', $event.target.value, $event.target.checked)">
     {{ eccentricity.name }}
   </label>
 </template>

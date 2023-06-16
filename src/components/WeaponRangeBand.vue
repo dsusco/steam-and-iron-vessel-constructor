@@ -45,7 +45,7 @@ const
       <select
         :value="minimumRange"
         @change="emit('update:minimumRange', $event.target.value)">
-        <option v-for="n in minimumRangeGamut">{{ n }}</option>
+        <option v-for="n in minimumRangeGamut" :key="n">{{ n }}</option>
       </select>
     </label>
 
@@ -54,7 +54,7 @@ const
       <select
         :value="maximumRange"
         @change="emit('update:maximumRange', $event.target.value)">
-        <option v-for="n in maximumRangeGamut">{{ n }}</option>
+        <option v-for="n in maximumRangeGamut" :key="n">{{ n }}</option>
       </select>
     </label>
 
@@ -63,7 +63,7 @@ const
       <select
         :value="rateOfFire"
         @change="emit('update:rateOfFire', $event.target.value)">
-        <option v-for="n in RATE_OF_FIRE_GAMUT">{{ n }}</option>
+        <option v-for="n in RATE_OF_FIRE_GAMUT" :key="n">{{ n }}</option>
       </select>
     </label>
 
@@ -72,7 +72,7 @@ const
       <select
         :value="accuracy"
         @change="emit('update:accuracy', $event.target.value)">
-        <option v-for="n in ACCURACY_GAMUT">{{ n }}</option>
+        <option v-for="n in ACCURACY_GAMUT" :key="n">{{ n }}</option>
       </select>
     </label>
 
@@ -81,7 +81,7 @@ const
       <select
         :value="damage"
         @change="emit('update:damage', $event.target.value)">
-        <option v-for="n in DAMAGE_GAMUT">{{ n }}</option>
+        <option v-for="n in DAMAGE_GAMUT" :key="n">{{ n }}</option>
       </select>
     </label>
 
@@ -90,7 +90,7 @@ const
       <select
         :value="penetration"
         @change="emit('update:penetration', $event.target.value)">
-        <option v-for="n in PENETRATION_GAMUT">{{ n }}</option>
+        <option v-for="n in PENETRATION_GAMUT" :key="n">{{ n }}</option>
       </select>
     </label>
 

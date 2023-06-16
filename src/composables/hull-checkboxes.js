@@ -1,35 +1,20 @@
-import { ref, isRef, unref, watchEffect } from 'vue'
+import { ref, watchEffect } from 'vue'
 
 export function useHullCheckboxes (hullRating, condition) {
-  const
-    hullCheckboxes = ref(null)
+  const hullCheckboxes = ref(null)
 
-  function setHullCheckboxes () {
+  watchEffect(() => {
     const
-      ready = Math.ceil(unref(hullRating) / 3),
-      damaged = Math.ceil((unref(hullRating) - ready) / 2),
-      crippled = unref(hullRating) - ready - damaged
+      ready = Math.ceil(hullRating.value / 3),
+      damaged = Math.ceil((hullRating.value - ready) / 2),
+      crippled = hullRating.value - ready - damaged
 
-    switch (unref(condition)) {
-      case 'ready':
-        hullCheckboxes.value = ready
-        break;
-      case 'damaged':
-        hullCheckboxes.value = damaged
-        break;
-      case 'crippled':
-        hullCheckboxes.value = crippled
-        break;
-      default:
-        hullCheckboxes.value = null
+    hullCheckboxes.value = {
+      ready,
+      damaged,
+      crippled
     }
-  }
-
-  if (isRef(hullRating)) {
-    watchEffect(setHullCheckboxes)
-  } else {
-    setHullCheckboxes()
-  }
+  })
 
   return { hullCheckboxes }
 }

@@ -1,28 +1,37 @@
 <script setup>
-import { computed, provide, toRefs } from 'vue'
+import { provide, toRef } from 'vue'
 
-import { ARMOR_RATING_GAMUT, ENGINE_RATING_GAMUT } from '@/constants/gamuts'
 import VesselConditionFiringDiagram from '@/components/VesselConditionFiringDiagram.vue'
-import { useHullCheckboxes } from '@/composables/hull-checkboxes'
+import { useArmorRatingGamut } from '@/composables/armor-rating-gamut'
+import { useEngineRatingGamut } from '@/composables/engine-rating-gamut'
 
 const
   emit = defineEmits([
-    'remove:vessel',
-    'update:class',
-    'update:type',
-    'update:hullRating',
-    'update:sizeCheckboxes',
     'update:engineRating',
     'update:armorRating'
   ]),
   props = defineProps({
     label: { type: String, required: true },
+    hullCheckboxes: { type: Number, required: true },
     nextCondition: Object,
     prevCondition: Object,
+    type: { type: String, required: true },
     engineRating: { type: String, required: true },
     armorRating: { type: String, required: true },
     firingArcs: { type: Object, required: true }
-  })
+  }),
+  { armorRatingGamut } = useArmorRatingGamut(
+    toRef(props, 'nextCondition'),
+    toRef(props, 'prevCondition')
+  ),
+  { engineRatingGamut } = useEngineRatingGamut(
+    toRef(props, 'type'),
+    toRef(props, 'nextCondition'),
+    toRef(props, 'prevCondition')
+  )
+
+  provide('nextCondition', toRef(props, 'nextCondition'))
+  provide('prevCondition', toRef(props, 'prevCondition'))
 </script>
 
 <template>
@@ -31,7 +40,7 @@ const
 
     <label>
       Hull Checkboxes
-      <input disabled :value="0">
+      <input disabled :value="hullCheckboxes">
     </label>
 
     <label>
@@ -55,7 +64,10 @@ const
     <fieldset>
       <legend>Firing Arcs</legend>
 
-
+      <VesselConditionFiringDiagram
+        v-for="(firingArcs, key) in firingArcs" :key="key"
+        :firingArcs="firingArcs"
+        :label="key" />
     </fieldset>
   </fieldset>
 </template>

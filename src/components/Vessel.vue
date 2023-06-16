@@ -8,8 +8,10 @@ import ECCENTRICITIES from '@/constants/eccentricities'
 import Eccentricity from '@/components/Eccentricity.vue'
 import VesselBattery from '@/components/VesselBattery.vue'
 import VesselCondition from '@/components/VesselCondition.vue'
-import { useEccentricities } from '@/composables/eccentricities'
 import { useClassification } from '@/composables/classification'
+import { useEccentricities } from '@/composables/eccentricities'
+import { useEngineRatingGamut } from '@/composables/engine-rating-gamut'
+import { useHullCheckboxes } from '@/composables/hull-checkboxes'
 
 const
   emit = defineEmits([
@@ -40,7 +42,14 @@ const
     toRefs(props),
     ECCENTRICITIES.Vessel
   ),
-  smallCraftEngineRatingGamut = [1]
+  { smallCraftEngineRatingGamut } = useEngineRatingGamut(
+    toRef(props, 'type')
+  ),
+  { hullCheckboxes } = useHullCheckboxes(
+    toRef(props, 'hullRating')
+  )
+
+  provide('batteries', toRef(props, 'batteries'))
 </script>
 
 <template>
@@ -60,8 +69,8 @@ const
         :disabled="eccentricities.length"
         :value="type"
         @change="emit('update:type', $event.target.value)">
-        <optgroup v-for="(classification, key) in CLASSIFICATIONS" :label="key">
-          <option v-for="(type, key) in classification">{{ key }}</option>
+        <optgroup v-for="(classification, key) in CLASSIFICATIONS" :key="key" :label="key">
+          <option v-for="(type, key) in classification" :key="key">{{ key }}</option>
         </optgroup>
       </select>
     </label>
@@ -72,7 +81,7 @@ const
       <legend>Eccentricities</legend>
 
       <Eccentricity
-        v-for="(eccentricity, abbr) in ECCENTRICITIES.Weapon" :key="abbr"
+        v-for="(eccentricity, abbr) in ECCENTRICITIES.Vessel" :key="abbr"
         :abbr="abbr"
         :checked="eccentricities.includes(abbr)"
         :disabled="!enabledEccentricities[abbr]"
@@ -80,7 +89,7 @@ const
         @update:eccentricity="(value, checked) => toggleEccentricity(value, checked)" />
     </fieldset>
 
-    <fieldset>
+    <fieldset class="vessel_batteries">
       <legend>Batteries</legend>
 
       <VesselBattery
@@ -89,7 +98,7 @@ const
         v-model:weaponId="battery.weaponId" />
     </fieldset>
 
-    <fieldset :hidden="!isColossal">
+    <fieldset class="vessel_conditions" v-if="isColossal">
       <legend>{{ classification }}</legend>
 
       <label>
@@ -102,16 +111,18 @@ const
       </label>
 
       <VesselCondition
-        v-for="(condition, key) in conditions"
+        v-for="(condition, key) in conditions" :key="key"
         :label="key"
-        :nextCondition="CONDITIONS[key].nextCondition"
-        :prevCondition="CONDITIONS[key].prevCondition"
-        v-model:engineRating="conditions.engineRating"
-        v-model:armorRating="conditions.armorRating"
-        v-model:firingArcs="conditions.firingArcs" />
+        :hullCheckboxes="hullCheckboxes[key]"
+        :nextCondition="conditions[CONDITIONS[key].nextCondition]"
+        :prevCondition="conditions[CONDITIONS[key].prevCondition]"
+        :type="type"
+        v-model:engineRating="condition.engineRating"
+        v-model:armorRating="condition.armorRating"
+        v-model:firingArcs="condition.firingArcs" />
     </fieldset>
 
-    <fieldset :hidden="!isSmallCraft">
+    <fieldset class="small_craft_values" v-if="isSmallCraft">
       <legend>{{ classification }}</legend>
 
       <label>

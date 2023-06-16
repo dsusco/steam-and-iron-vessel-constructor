@@ -10,8 +10,7 @@ const
     firingArcs: { type: Object, required: true },
     label: { type: String, required: true }
   }),
-  batteries = inject('batteries'),
-  weapon = computed(() => useWeaponsStore().weapons[batteries.value[props.label].weapon])
+  weapon = computed(() => useWeaponsStore().weapons[inject('batteries').value[props.label].weaponId])
 </script>
 
 <template>
@@ -19,11 +18,10 @@ const
     <legend>{{ label }} ({{ weapon.name }})</legend>
 
     <VesselConditionFiringDiagramArc
-      v-for="arc in WEAPON_TYPES[weapon.type].firingArcs"
+      v-for="arc in WEAPON_TYPES[weapon.type].firingArcs" :key="arc"
       :battery="label"
       :label="arc"
-      :weapons="firingArcs[arc]"
-      @update:firing-arc="(weapons) => firingArcs[arc] = weapons" />
+      v-model:weapons="firingArcs[arc]" />
   </fieldset>
 </template>
 

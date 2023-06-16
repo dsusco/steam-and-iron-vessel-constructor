@@ -9,9 +9,7 @@ export function useRangeBands (type, rangeBands) {
   function addRangeBand () {
     const range = nextMinimumRange.value
 
-    if (range) {
-      rangeBands.value.push(new RangeBand(range))
-    }
+    if (range) rangeBands.value.push(new RangeBand(range))
   }
 
   function removeRangeBand (index) {

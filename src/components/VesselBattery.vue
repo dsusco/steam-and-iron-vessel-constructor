@@ -1,6 +1,4 @@
 <script setup>
-import { computed } from 'vue'
-
 import { useWeaponsStore } from '@/stores/weapons-store'
 
 const
@@ -24,7 +22,7 @@ const
         :value="weaponId"
         @change="emit('update:weaponId', $event.target.value)">
         <option value=""></option>
-        <option v-for="(weapon, key) in weaponsStore.weapons" :value="key">{{ weapon.name || key }}</option>
+        <option v-for="(weapon, key) in weaponsStore.weapons" :key="key" :value="key">{{ weapon.name || key }}</option>
       </select>
     </label>
   </fieldset>

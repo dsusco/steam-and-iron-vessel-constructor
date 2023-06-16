@@ -48,7 +48,7 @@ const
         :disabled="rangeBands.length || eccentricities.length"
         :value="type"
         @change="emit('update:type', $event.target.value)">
-        <option v-for="(weaponType, key) in WEAPON_TYPES">{{ key }}</option>
+        <option v-for="(weaponType, key) in WEAPON_TYPES" :key="key">{{ key }}</option>
       </select>
     </label>
 

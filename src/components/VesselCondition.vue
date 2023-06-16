@@ -6,33 +6,23 @@ import VesselConditionFiringDiagram from '@/components/VesselConditionFiringDiag
 import { useHullCheckboxes } from '@/composables/hull-checkboxes'
 
 const
+  emit = defineEmits([
+    'remove:vessel',
+    'update:class',
+    'update:type',
+    'update:hullRating',
+    'update:sizeCheckboxes',
+    'update:engineRating',
+    'update:armorRating'
+  ]),
   props = defineProps({
-    condition: { type: Object, required: true },
     label: { type: String, required: true },
-    maximumVesselEngineRating: { type: Number, required: true },
     nextCondition: Object,
     prevCondition: Object,
-    vesselHullRating: { type: Number, required: true }
-  }),
-  { nextCondition, prevCondition, vesselHullRating } = toRefs(props),
-  armorRatingGamut = computed(() => {
-    const
-      gamutStart = nextCondition.value ? ARMOR_RATING_GAMUT.indexOf(nextCondition.value.armorRating) : 0,
-      gamutEnd = prevCondition.value ? ARMOR_RATING_GAMUT.indexOf(prevCondition.value.armorRating) + 1 : ARMOR_RATING_GAMUT.length
-
-    return ARMOR_RATING_GAMUT.slice(gamutStart, gamutEnd)
-  }),
-  engineRatingGamut = computed(() => {
-    const
-      gamutStart = nextCondition.value ? ENGINE_RATING_GAMUT.indexOf(nextCondition.value.engineRating) : 0,
-      gamutEnd = prevCondition.value ? ENGINE_RATING_GAMUT.indexOf(prevCondition.value.engineRating) : props.maximumVesselEngineRating
-
-    return ENGINE_RATING_GAMUT.slice(gamutStart, gamutEnd + 1)
-  }),
-  { hullCheckboxes } = useHullCheckboxes(vesselHullRating, props.label)
-
-  provide('nextCondition', nextCondition)
-  provide('prevCondition', prevCondition)
+    engineRating: { type: String, required: true },
+    armorRating: { type: String, required: true },
+    firingArcs: { type: Object, required: true }
+  })
 </script>
 
 <template>
@@ -41,19 +31,23 @@ const
 
     <label>
       Hull Checkboxes
-      <input disabled :value="hullCheckboxes">
+      <input disabled :value="0">
     </label>
 
     <label>
       Engine Rating
-      <select v-model="condition.engineRating">
+      <select
+        :value="engineRating"
+        @change="emit('update:engineRating', $event.target.value)">
         <option v-for="n in engineRatingGamut" :key="n">{{ n }}</option>
       </select>
     </label>
 
     <label>
       Armor Rating
-      <select v-model="condition.armorRating">
+      <select
+        :value="armorRating"
+        @change="emit('update:armorRating', $event.target.value)">
         <option v-for="n in armorRatingGamut" :key="n">{{ n }}</option>
       </select>
     </label>
@@ -61,10 +55,7 @@ const
     <fieldset>
       <legend>Firing Arcs</legend>
 
-      <VesselConditionFiringDiagram
-        v-for="(firingArcs, key) in condition.firingArcs" :key="key"
-        :firingArcs="firingArcs"
-        :label="key" />
+
     </fieldset>
   </fieldset>
 </template>

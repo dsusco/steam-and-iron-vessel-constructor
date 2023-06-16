@@ -1,58 +1,83 @@
 <script setup>
-import { computed, provide, toRefs } from 'vue'
+import { provide, toRef, toRefs } from 'vue'
 
 import { ARMOR_RATING_GAMUT, ENGINE_RATING_GAMUT, HULL_RATING_GAMUT, SIZE_CHECKBOXES_GAMUT } from '@/constants/gamuts'
-import CONDITIONS from '@/constants/conditions'
 import CLASSIFICATIONS from '@/constants/classifications'
+import CONDITIONS from '@/constants/conditions'
 import ECCENTRICITIES from '@/constants/eccentricities'
 import Eccentricity from '@/components/Eccentricity.vue'
 import VesselBattery from '@/components/VesselBattery.vue'
 import VesselCondition from '@/components/VesselCondition.vue'
+import { useEccentricities } from '@/composables/eccentricities'
 import { useClassification } from '@/composables/classification'
 
 const
+  emit = defineEmits([
+    'remove:vessel',
+    'update:class',
+    'update:type',
+    'update:hullRating',
+    'update:sizeCheckboxes',
+    'update:engineRating',
+    'update:armorRating'
+  ]),
   props = defineProps({
     id: { type: String, required: true },
-    vessel: { type: Object, required: true }
+    class: { type: String, required: true },
+    type: { type: String, required: true },
+    eccentricities: { type: Array, required: true },
+    batteries: { type: Object, required: true },
+    hullRating: { type: String, required: true },
+    conditions: { type: Object, required: true },
+    sizeCheckboxes: { type: String, required: true },
+    engineRating: { type: String, required: true },
+    armorRating: { type: String, required: true }
   }),
-  { type, batteries } = toRefs(props.vessel),
-  { classification, isColossal, isSmallCraft } = useClassification(type),
-  smallCraftEngineRatingGamut = computed(() =>
-    ENGINE_RATING_GAMUT.slice(
-      0,
-      CLASSIFICATIONS[classification.value][type.value].maximumEngineRating + 1))
-
-  provide('batteries', batteries)
+  { classification, isColossal, isSmallCraft } = useClassification(
+    toRef(props, 'type')
+  ),
+  { enabledEccentricities, toggleEccentricity } = useEccentricities(
+    toRefs(props),
+    ECCENTRICITIES.Vessel
+  ),
+  smallCraftEngineRatingGamut = [1]
 </script>
 
 <template>
   <fieldset class="vessel">
-    <legend>{{ vessel.class || id }}</legend>
+    <legend>{{ this.class || id }}</legend>
 
     <label>
       Class
-      <input type="text" v-model="vessel.class">
+      <input
+        :value="class"
+        @input="emit('update:class', $event.target.value)">
     </label>
 
     <label>
       Type
-      <select :disabled="vessel.eccentricities.length" v-model="type">
+      <select
+        :disabled="eccentricities.length"
+        :value="type"
+        @change="emit('update:type', $event.target.value)">
         <optgroup v-for="(classification, key) in CLASSIFICATIONS" :label="key">
           <option v-for="(type, key) in classification">{{ key }}</option>
         </optgroup>
       </select>
     </label>
 
-    <button type="button" @click="$emit('removeVessel')">×</button>
+    <button type="button" @click="emit('remove:vessel', id)">×</button>
 
     <fieldset class="vessel_eccentricities">
       <legend>Eccentricities</legend>
 
       <Eccentricity
-        v-for="(eccentricity, abbr) in ECCENTRICITIES.Vessel" :key="abbr"
+        v-for="(eccentricity, abbr) in ECCENTRICITIES.Weapon" :key="abbr"
         :abbr="abbr"
+        :checked="eccentricities.includes(abbr)"
+        :disabled="!enabledEccentricities[abbr]"
         :eccentricity="eccentricity"
-        :vessel="vessel" />
+        @update:eccentricity="(value, checked) => toggleEccentricity(value, checked)" />
     </fieldset>
 
     <fieldset>
@@ -60,8 +85,8 @@ const
 
       <VesselBattery
         v-for="(battery, key) in batteries" :key="key"
-        :battery="battery"
-        :label="key" />
+        :label="key"
+        v-model:weaponId="battery.weaponId" />
     </fieldset>
 
     <fieldset :hidden="!isColossal">
@@ -69,19 +94,21 @@ const
 
       <label>
         Hull Rating
-        <select v-model="vessel.hullRating">
+        <select
+          :value="hullRating"
+          @change="emit('update:hullRating', $event.target.value)">
           <option v-for="n in HULL_RATING_GAMUT" :key="n">{{ n }}</option>
         </select>
       </label>
 
       <VesselCondition
-        v-for="(condition, key) in CONDITIONS"
-        :condition="vessel.conditions[key]"
+        v-for="(condition, key) in conditions"
         :label="key"
-        :maximumVesselEngineRating="CLASSIFICATIONS[classification][type].maximumEngineRating"
-        :nextCondition="vessel.conditions[condition.nextCondition]"
-        :prevCondition="vessel.conditions[condition.prevCondition]"
-        :vesselHullRating="+vessel.hullRating" />
+        :nextCondition="CONDITIONS[key].nextCondition"
+        :prevCondition="CONDITIONS[key].prevCondition"
+        v-model:engineRating="conditions.engineRating"
+        v-model:armorRating="conditions.armorRating"
+        v-model:firingArcs="conditions.firingArcs" />
     </fieldset>
 
     <fieldset :hidden="!isSmallCraft">
@@ -89,21 +116,27 @@ const
 
       <label>
         Size Checkboxes
-        <select v-model="vessel.sizeCheckboxes">
+        <select
+          :value="sizeCheckboxes"
+          @change="emit('update:sizeCheckboxes', $event.target.value)">
           <option v-for="n in SIZE_CHECKBOXES_GAMUT" :key="n">{{ n }}</option>
         </select>
       </label>
 
       <label>
         Engine Rating
-        <select v-model="vessel.engineRating">
+        <select
+          :value="engineRating"
+          @change="emit('update:engineRating', $event.target.value)">
           <option v-for="n in smallCraftEngineRatingGamut" :key="n">{{ n }}</option>
         </select>
       </label>
 
       <label>
         Armor Rating
-        <select v-model="vessel.armorRating">
+        <select
+          :value="armorRating"
+          @change="emit('update:armorRating', $event.target.value)">
           <option v-for="n in ARMOR_RATING_GAMUT" :key="n">{{ n }}</option>
         </select>
       </label>

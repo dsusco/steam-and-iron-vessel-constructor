@@ -1,0 +1,40 @@
+,
+  smallCraftEngineRatingGamut = computed(() =>
+    ENGINE_RATING_GAMUT.slice(
+      0,
+      CLASSIFICATIONS[classification.value][type.value].maximumEngineRating + 1))
+
+  provide('batteries', batteries)
+
+
+
+
+
+,
+  { nextCondition, prevCondition, vesselHullRating } = toRefs(props),
+  armorRatingGamut = computed(() => {
+    const
+      gamutStart = nextCondition.value ? ARMOR_RATING_GAMUT.indexOf(nextCondition.value.armorRating) : 0,
+      gamutEnd = prevCondition.value ? ARMOR_RATING_GAMUT.indexOf(prevCondition.value.armorRating) + 1 : ARMOR_RATING_GAMUT.length
+
+    return ARMOR_RATING_GAMUT.slice(gamutStart, gamutEnd)
+  }),
+  engineRatingGamut = computed(() => {
+    const
+      gamutStart = nextCondition.value ? ENGINE_RATING_GAMUT.indexOf(nextCondition.value.engineRating) : 0,
+      gamutEnd = prevCondition.value ? ENGINE_RATING_GAMUT.indexOf(prevCondition.value.engineRating) : props.maximumVesselEngineRating
+
+    return ENGINE_RATING_GAMUT.slice(gamutStart, gamutEnd + 1)
+  }),
+  { hullCheckboxes } = useHullCheckboxes(vesselHullRating, props.label)
+
+  provide('nextCondition', nextCondition)
+  provide('prevCondition', prevCondition)
+
+
+
+  ---
+        <VesselConditionFiringDiagram
+        v-for="(firingArcs, key) in condition.firingArcs" :key="key"
+        :firingArcs="firingArcs"
+        :label="key" />

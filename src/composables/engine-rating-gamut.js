@@ -19,15 +19,17 @@ export function useEngineRatingGamut (type, nextCondition = ref(null), prevCondi
   })
 
   watchEffect(() => {
-   const
-    gamutStart = nextCondition.value ?
-      ENGINE_RATING_GAMUT.indexOf(nextCondition.value.engineRating) :
-      0,
-    gamutEnd = prevCondition.value ?
-      ENGINE_RATING_GAMUT.indexOf(prevCondition.value.engineRating) :
-      CLASSIFICATIONS[classification.value][type.value].maximumEngineRating
+    try {
+      const
+        gamutStart = nextCondition.value ?
+          ENGINE_RATING_GAMUT.indexOf(nextCondition.value.engineRating) :
+          0,
+        gamutEnd = prevCondition.value ?
+          ENGINE_RATING_GAMUT.indexOf(prevCondition.value.engineRating) :
+          CLASSIFICATIONS[classification.value][type.value].maximumEngineRating
 
-    engineRatingGamut.value = ENGINE_RATING_GAMUT.slice(gamutStart, gamutEnd + 1)
+      engineRatingGamut.value = ENGINE_RATING_GAMUT.slice(gamutStart, gamutEnd + 1)
+    } catch (ignore) {}
   })
 
   return { engineRatingGamut, smallCraftEngineRatingGamut }

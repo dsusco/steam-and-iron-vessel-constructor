@@ -22,7 +22,13 @@ export default {
       ],
       prohibitedEccentricities: [
         'ACrl',
-        'Sub'
+        {
+          eccentricity: 'Sub',
+          requiredTypes: [
+            'Ironclad',
+            'Contraptions'
+          ]
+        }
       ]
     },
     ACrl: {
@@ -32,8 +38,7 @@ export default {
         'Contraptions'
       ],
       prohibitedEccentricities: [
-        'Amph',
-        'Sub'
+        'Amph'
       ]
     },
     M: {
@@ -46,6 +51,14 @@ export default {
       name: 'Mobile+',
       prohibitedEccentricities: [
         'M'
+      ]
+    },
+    P: {
+      name: 'Ponderous',
+      requiredTypes: [
+        'Aeronef',
+        'Aquanef',
+        'Ironclad'
       ]
     },
     RA1: {
@@ -113,19 +126,31 @@ export default {
             'Amph'
           ]
         }
-      ],
-      prohibitedEccentricities: [
-        'ACrl'
       ]
     },
     TBA: {
-      name: 'Thick Bottom Armor'
+      name: 'Thick Bottom Armor',
+      requiredTypes: [
+        'Aeronef',
+        'Aquanef',
+        'Ironclad'
+      ]
     },
     TRA: {
-      name: 'Thick Rear Armor'
+      name: 'Thick Rear Armor',
+      requiredTypes: [
+        'Aeronef',
+        'Aquanef',
+        'Ironclad'
+      ]
     },
     TTA: {
-      name: 'Thick Top Armor'
+      name: 'Thick Top Armor',
+      requiredTypes: [
+        'Aeronef',
+        'Aquanef',
+        'Ironclad'
+      ]
     }
   },
   Weapon: {

@@ -41,10 +41,10 @@ const
       grid-area: forward;
       text-align: center;
     }
-    &._astarboardForward {
+    &._astarboard_forward {
       grid-area: astarboardForward;
     }
-    &._astarboardAft {
+    &._astarboard_aft {
       grid-area: astarboardAft;
     }
     &._aft,
@@ -52,10 +52,10 @@ const
       grid-area: aft;
       text-align: center;
     }
-    &._aportAft {
+    &._aport_aft {
       grid-area: aportAft;
     }
-    &._aportForward {
+    &._aport_forward {
       grid-area: aportForward;
     }
   }

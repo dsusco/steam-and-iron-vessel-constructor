@@ -5,14 +5,14 @@ export function useHullCheckboxes (hullRating, condition) {
 
   watchEffect(() => {
     const
-      ready = Math.ceil(hullRating.value / 3),
-      damaged = Math.ceil((hullRating.value - ready) / 2),
-      crippled = hullRating.value - ready - damaged
+      Ready = Math.ceil(hullRating.value / 3),
+      Damaged = Math.ceil((hullRating.value - Ready) / 2),
+      Crippled = hullRating.value - Ready - Damaged
 
     hullCheckboxes.value = {
-      ready,
-      damaged,
-      crippled
+      Ready,
+      Damaged,
+      Crippled
     }
   })
 

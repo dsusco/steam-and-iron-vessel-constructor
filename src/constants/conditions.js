@@ -1,12 +1,12 @@
 export default {
-  ready: {
-    nextCondition: 'damaged'
+  Ready: {
+    nextCondition: 'Damaged'
   },
-  damaged: {
-    nextCondition: 'crippled',
-    prevCondition: 'ready'
+  Damaged: {
+    nextCondition: 'Crippled',
+    prevCondition: 'Ready'
   },
-  crippled: {
-    prevCondition: 'damaged'
+  Crippled: {
+    prevCondition: 'Damaged'
   }
 }

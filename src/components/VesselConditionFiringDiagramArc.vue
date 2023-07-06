@@ -21,7 +21,7 @@ const
 </script>
 
 <template>
-  <label :class="`arc _${label}`">
+  <label :class="`arc _${label.toLowerCase().replace(/\s+/g, '_')}`">
     {{ label }}
     <select
       :value="weapons"

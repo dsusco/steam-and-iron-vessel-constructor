@@ -35,7 +35,7 @@ const
 </script>
 
 <template>
-  <fieldset v-if="hullCheckboxes">
+  <fieldset :class="`condition _${label.toLowerCase().replace(/\s+/g, '_')}`" v-if="hullCheckboxes">
     <legend>{{ label }}</legend>
 
     <label>

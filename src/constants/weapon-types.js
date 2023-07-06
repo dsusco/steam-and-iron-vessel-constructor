@@ -1,10 +1,10 @@
 export default {
   Guns: {
-    firingArcs: ['forward', 'astarboardForward', 'astarboardAft', 'aft', 'aportAft', 'aportForward'],
+    firingArcs: ['Forward', 'Astarboard Forward', 'Astarboard Aft', 'Aft', 'Aport Aft', 'Aport Forward'],
     maximumRange: 18
   },
   'Released Munitions': {
-    firingArcs: ['above', 'below'],
+    firingArcs: ['Above', 'Below'],
     maximumRange: 12
   }
 }

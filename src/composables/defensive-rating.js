@@ -11,7 +11,7 @@ export function useDefensiveRating (type, hullRating, conditions, sizeCheckboxes
     { hullCheckboxes } = useHullCheckboxes(hullRating)
 
   function defensiveIntegrant(number, armorRating) {
-    return number * 6 / (6 - ARMOR_RATING_GAMUT.indexOf(armorRating))
+    return +number * 6 / (6 - ARMOR_RATING_GAMUT.indexOf(armorRating))
   }
 
   watchEffect(() => {
@@ -24,6 +24,10 @@ export function useDefensiveRating (type, hullRating, conditions, sizeCheckboxes
     } else {
       defensiveRating.value = 0
     }
+
+    // agile/agile+
+    // reinforced armor
+    // thick bottom/rear/top armor
   })
 
   return { defensiveRating }

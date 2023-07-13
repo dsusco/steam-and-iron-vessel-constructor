@@ -2,6 +2,7 @@
 import { toRef } from 'vue'
 
 import { ACCURACY_GAMUT, DAMAGE_GAMUT, PENETRATION_GAMUT, RATE_OF_FIRE_GAMUT } from '@/constants/gamuts'
+import { useOffensivePotential } from '@/composables/offensive-potential'
 import { useRangeGamuts } from '@/composables/range-gamuts'
 import { useWeaponsStore } from '@/stores/weapons-store'
 
@@ -27,6 +28,14 @@ const
     damage: { type: String, required: true },
     penetration: { type: String, required: true }
   }),
+  { offensivePotential } = useOffensivePotential(
+    toRef(props, 'minimumRange'),
+    toRef(props, 'maximumRange'),
+    toRef(props, 'rateOfFire'),
+    toRef(props, 'accuracy'),
+    toRef(props, 'damage'),
+    toRef(props, 'penetration')
+  ),
   { maximumRangeGamut, minimumRangeGamut } = useRangeGamuts(
     toRef(props, 'maximumWeaponRange'),
     toRef(props, 'nextRangeBand'),
@@ -39,7 +48,7 @@ const
 <template>
   <fieldset>
     <legend>Range Band</legend>
-
+<div>OP: {{offensivePotential}}</div>
     <label>
       Minimum Range
       <select

@@ -9,6 +9,7 @@ import Eccentricity from '@/components/Eccentricity.vue'
 import VesselBattery from '@/components/VesselBattery.vue'
 import VesselCondition from '@/components/VesselCondition.vue'
 import { useClassification } from '@/composables/classification'
+import { useDefensiveRating } from '@/composables/defensive-rating'
 import { useEccentricities } from '@/composables/eccentricities'
 import { useEngineRatingGamut } from '@/composables/engine-rating-gamut'
 import { useHullCheckboxes } from '@/composables/hull-checkboxes'
@@ -37,6 +38,13 @@ const
   }),
   { classification, isColossal, isSmallCraft } = useClassification(
     toRef(props, 'type')
+  ),
+  { defensiveRating } = useDefensiveRating(
+    toRef(props, 'type'),
+    toRef(props, 'hullRating'),
+    toRef(props, 'conditions'),
+    toRef(props, 'sizeCheckboxes'),
+    toRef(props, 'armorRating')
   ),
   { enabledEccentricities, toggleEccentricity } = useEccentricities(
     toRefs(props),
@@ -76,6 +84,8 @@ const
     </label>
 
     <button type="button" @click="emit('remove:vessel', id)">×</button>
+
+    <span>DRAT: {{ defensiveRating }}</span>
 
     <fieldset class="vessel_eccentricities">
       <legend>Eccentricities</legend>

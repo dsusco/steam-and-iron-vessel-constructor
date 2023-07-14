@@ -6,6 +6,7 @@ import WEAPON_TYPES from '@/constants/weapon-types'
 import Eccentricity from '@/components/Eccentricity.vue'
 import WeaponRangeBand from '@/components/WeaponRangeBand.vue'
 import { useEccentricities } from '@/composables/eccentricities'
+import { useOffensivePotential } from '@/composables/offensive-potential'
 import { useRangeBands } from '@/composables/range-bands'
 
 const
@@ -24,6 +25,10 @@ const
   { enabledEccentricities, toggleEccentricity } = useEccentricities(
     toRefs(props),
     ECCENTRICITIES.Weapon
+  ),
+  { offensivePotential } = useOffensivePotential(
+    toRef(props, 'rangeBands'),
+    toRef(props, 'eccentricities')
   ),
   { addRangeBand, nextMinimumRange, removeRangeBand } = useRangeBands(
     toRef(props, 'type'),
@@ -53,6 +58,8 @@ const
     </label>
 
     <button type="button" @click="emit('remove:weapon', id)">×</button>
+
+    <span>OP: {{ offensivePotential }}</span>
 
     <fieldset class="weapon_range_bands">
       <legend>Range Bands</legend>

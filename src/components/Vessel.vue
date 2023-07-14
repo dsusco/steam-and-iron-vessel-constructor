@@ -44,7 +44,8 @@ const
     toRef(props, 'hullRating'),
     toRef(props, 'conditions'),
     toRef(props, 'sizeCheckboxes'),
-    toRef(props, 'armorRating')
+    toRef(props, 'armorRating'),
+    toRef(props, 'eccentricities')
   ),
   { enabledEccentricities, toggleEccentricity } = useEccentricities(
     toRefs(props),

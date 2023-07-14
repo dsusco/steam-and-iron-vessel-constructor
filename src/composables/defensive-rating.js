@@ -4,7 +4,7 @@ import { ARMOR_RATING_GAMUT } from '@/constants/gamuts'
 import { useClassification } from '@/composables/classification'
 import { useHullCheckboxes } from '@/composables/hull-checkboxes'
 
-export function useDefensiveRating (type, hullRating, conditions, sizeCheckboxes, armorRating) {
+export function useDefensiveRating (type, hullRating, conditions, sizeCheckboxes, armorRating, eccentricities) {
   const
     defensiveRating = ref(null),
     { isColossal, isSmallCraft } = useClassification(type),

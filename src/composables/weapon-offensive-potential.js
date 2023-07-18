@@ -3,11 +3,11 @@ import { ref, watchEffect } from 'vue'
 import { ACCURACY_GAMUT } from '@/constants/gamuts'
 import PENETRATION_MODIFIER from '@/constants/penetration-modifier'
 
-export function useOffensivePotential (rangeBands, eccentricities) {
+export function useWeaponOffensivePotential (rangeBands, eccentricities) {
   const
-    offensivePotential = ref(null)
+    weaponOffensivePotential = ref(null)
 
-  function offensivePotentialReduction (total, rangeBand) {
+  function weaponOffensivePotentialReduction (total, rangeBand) {
     return total +
       (+rangeBand.maximumRange + 1 - +rangeBand.minimumRange) *
       +rangeBand.rateOfFire *
@@ -17,8 +17,8 @@ export function useOffensivePotential (rangeBands, eccentricities) {
   }
 
   watchEffect(() => {
-    offensivePotential.value = rangeBands.value.reduce(offensivePotentialReduction, 0).toFixed(3)
+    weaponOffensivePotential.value = +rangeBands.value.reduce(weaponOffensivePotentialReduction, 0).toFixed(3)
   })
 
-  return { offensivePotential }
+  return { weaponOffensivePotential }
 }

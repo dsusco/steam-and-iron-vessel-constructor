@@ -1,5 +1,5 @@
 <script setup>
-import { provide, toRef, toRefs } from 'vue'
+import { computed, provide, toRef, toRefs } from 'vue'
 
 import { ARMOR_RATING_GAMUT, ENGINE_RATING_GAMUT, HULL_RATING_GAMUT, SIZE_CHECKBOXES_GAMUT } from '@/constants/gamuts'
 import CLASSIFICATIONS from '@/constants/classifications'
@@ -13,6 +13,7 @@ import { useDefensiveRating } from '@/composables/defensive-rating'
 import { useEccentricities } from '@/composables/eccentricities'
 import { useEngineRatingGamut } from '@/composables/engine-rating-gamut'
 import { useHullCheckboxes } from '@/composables/hull-checkboxes'
+import { useOffensiveRating } from '@/composables/offensive-rating'
 
 const
   emit = defineEmits([
@@ -56,6 +57,11 @@ const
   ),
   { hullCheckboxes } = useHullCheckboxes(
     toRef(props, 'hullRating')
+  ),
+  { offensiveRating } = useOffensiveRating(
+    toRef(props, 'hullRating'),
+    toRef(props, 'batteries'),
+    toRef(props, 'conditions')
   )
 
   provide('batteries', toRef(props, 'batteries'))
@@ -87,6 +93,7 @@ const
     <button type="button" @click="emit('remove:vessel', id)">×</button>
 
     <span>DRAT: {{ defensiveRating }}</span>
+    <span>ORAT: {{ offensiveRating }}</span>
 
     <fieldset class="vessel_eccentricities">
       <legend>Eccentricities</legend>

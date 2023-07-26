@@ -12,7 +12,7 @@ export function useWeaponOffensivePotential (rangeBands, eccentricities) {
       (+rangeBand.maximumRange + 1 - +rangeBand.minimumRange) *
       +rangeBand.rateOfFire *
       (ACCURACY_GAMUT.indexOf(rangeBand.accuracy) + 1) / 6 *
-      +rangeBand.damage * 7 / 12 *
+      +rangeBand.damage * 7/12 *
       PENETRATION_MODIFIER[rangeBand.penetration]
   }
 

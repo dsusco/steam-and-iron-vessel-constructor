@@ -62,7 +62,8 @@ const
     toRef(props, 'hullRating'),
     toRef(props, 'batteries'),
     toRef(props, 'conditions')
-  )
+  ),
+  combatRating = computed(() => Math.round(Math.sqrt(offensiveRating.value * defensiveRating.value)))
 
   provide('batteries', toRef(props, 'batteries'))
 </script>
@@ -94,6 +95,7 @@ const
 
     <span>DRAT: {{ defensiveRating }}</span>
     <span>ORAT: {{ offensiveRating }}</span>
+    <span>CRAT: {{ combatRating }}</span>
 
     <fieldset class="vessel_eccentricities">
       <legend>Eccentricities</legend>

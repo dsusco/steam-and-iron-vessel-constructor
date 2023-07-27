@@ -1,7 +1,9 @@
 <script setup>
-import { computed, inject } from 'vue'
+import { storeToRefs } from 'pinia'
+import { computed, inject, toRef } from 'vue'
 
 import WEAPON_TYPES from '@/constants/weapon-types'
+import { useVariantName } from '@/composables/variant-name'
 import { useWeaponsStore } from '@/stores/weapons-store'
 
 const
@@ -10,19 +12,16 @@ const
     label: { type: String, required: true }
   }),
   batteries = inject('batteries'),
-  weapon = computed(() => useWeaponsStore().weapons[batteries.value[props.label].weapon]),
-  weaponType = computed(() => {
-    try {
-      return weapon.value.type.toLowerCase().split(/\s/).join('_')
-    } catch (e) {
-      return null
-    }
-  })
+  { weapons } = storeToRefs(useWeaponsStore()),
+  weapon = computed(() => weapons.value[batteries.value[props.label].weaponId]),
+  weaponType = computed(() => useVariantName(weapon.value.type).variantName.value)
 </script>
 
 <template>
-  <div :class="`firing_diagram _${label} _${weaponType}`" :data-battery="label" v-if="weapon">
-    <span :class="`arc _${arc}`" v-for="arc in WEAPON_TYPES[weapon.type].firingArcs">{{firingArcs[arc]}}</span>
+  <div :class="`firing_diagram _${label.toLowerCase()} ${weaponType}`" :data-battery="label" v-if="weapon">
+    <span
+      :class="`arc ${useVariantName(arc).variantName.value}`"
+      v-for="arc in WEAPON_TYPES[weapon.type].firingArcs">{{firingArcs[arc]}}</span>
   </div>
 </template>
 
@@ -35,7 +34,7 @@ const
     background: url('gun_arc_diagram.png') center no-repeat;
   }
 
-  &._released_munitions {
+  &._releasedMunitions {
     background: url('released_munitions_arc_diagram.png') center no-repeat;
   }
 
@@ -45,28 +44,30 @@ const
 
     &._forward,
     &._above {
+      top: .2rem;
       bottom: auto;
     }
 
     &._astarboardForward {
-      inset: 1rem 1.8rem auto auto;
+      inset: .9rem 1.9rem auto auto;
     }
 
     &._astarboardAft {
-      inset: auto 1.8rem 1rem auto;
+      inset: auto 1.9rem .9rem auto;
     }
 
     &._aft,
     &._below {
       top: auto;
+      bottom: .1rem;
     }
 
     &._aportAft {
-      inset: auto auto 1rem 1.8rem;
+      inset: auto auto .9rem 1.9rem;
     }
 
     &._aportForward {
-      inset: 1rem auto auto 1.8rem;
+      inset: .9rem auto auto 1.9rem;
     }
   }
 }

@@ -1,4 +1,5 @@
 @import 'baseline-scss';
+@import 'components';
 
 :root {
   --font_family_sans: 'Open Sans', sans-serif;
@@ -7,7 +8,7 @@
   --vessel_card_border_color: #000;
   --vessel_card_color: #000;
   --vessel_card_margin: .3rem;
-  --vessel_card_padding: .2rem;
+  --vessel_card_padding: .3rem;
 
   --vessel_card_gray: #eee;
 }
@@ -18,3 +19,4 @@
     display: none;
   }
 }
+

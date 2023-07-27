@@ -19,68 +19,40 @@ const
   <div :class="`range_band _${index+1}`">
     <div class="range">{{ range }}</div>
 
-    <div class="rateOfFire">{{ rangeBand.rateOfFire }}</div>
-
-    <div class="accuracy">{{ rangeBand.accuracy }}</div>
-
-    <div class="damage">{{ rangeBand.damage }}</div>
-
-    <div class="penetration">{{ rangeBand.penetration }}</div>
+    <div class="values">
+      <span class="rateOfFire">{{ rangeBand.rateOfFire }}</span>×
+      <span class="accuracy">{{ rangeBand.accuracy }}</span>/<span class="damage">{{ rangeBand.damage }}</span>
+      <span class="penetration" v-if="rangeBand.penetration !== '-'">{{ rangeBand.penetration }}</span>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .range_band {
-  @include after_border(var(--vessel_card_gray), 0 0 0 .1rem);
-
   display: grid;
-  grid-template-columns: repeat(4, 25%);
+  grid-template-columns: 7ch 1fr;
   grid-template-areas:
-    'range range range range'
-    'rateOfFire accuracy damage penetration';
-  text-align: center;
+    'range values';
 
-  &._1 {
-    grid-area: range_band_1;
+  > .range {
+    grid-area: range;
+    padding: 0 var(--vessel_card_padding);
+    text-align: right;
   }
 
-  &._2 {
-    grid-area: range_band_2;
-  }
-
-  &._3 {
-    grid-area: range_band_3;
-  }
-
-  &:last-of-type:not(._3)::after {
-    border-right-width: .1rem;
-  }
-
-  > * {
+  > .values {
+    grid-area: values;
     padding: 0 var(--vessel_card_padding);
   }
 
-  > .range {
-    @include after_border(var(--vessel_card_gray), 0 0 .1rem);
-    grid-area: range;
+  > .values > .penetration {
+    &::before { content: '('; }
+    &::after { content: ')'; }
   }
 
-  > .rateOfFire {
-    grid-area: rateOfFire;
-  }
-
-  > .accuracy {
+  &._1,
+  &._3 {
     background-color: var(--vessel_card_gray);
-    grid-area: accuracy;
-  }
-
-  > .damage {
-    grid-area: damage;
-  }
-
-  > .penetration {
-    background-color: var(--vessel_card_gray);
-    grid-area: penetration;
   }
 }
 </style>

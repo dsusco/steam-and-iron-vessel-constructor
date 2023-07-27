@@ -1,19 +1,36 @@
 <script setup>
-import { provide, toRefs } from 'vue'
+import { computed, provide, toRef, toRefs } from 'vue'
 
 import ECCENTRICITIES from '@/constants/eccentricities'
 import CardBattery from '@/components/CardBattery.vue'
 import CardCondition from '@/components/CardCondition.vue'
 import { useClassification } from '@/composables/classification'
+import { useDefensiveRating } from '@/composables/defensive-rating'
+import { useOffensiveRating } from '@/composables/offensive-rating'
 
 const
   props = defineProps({
     vessel: { type: Object, required: true }
   }),
-  { type, batteries } = toRefs(props.vessel),
-  { classification, isColossal, isSmallCraft, isAerovessel } = useClassification(type)
+  { classification, isColossal, isSmallCraft, isAerovessel } = useClassification(
+    toRef(props.vessel, 'type')
+  ),
+  { defensiveRating } = useDefensiveRating(
+    toRef(props.vessel, 'type'),
+    toRef(props.vessel, 'hullRating'),
+    toRef(props.vessel, 'conditions'),
+    toRef(props.vessel, 'sizeCheckboxes'),
+    toRef(props.vessel, 'armorRating'),
+    toRef(props.vessel, 'eccentricities')
+  ),
+  { offensiveRating } = useOffensiveRating(
+    toRef(props.vessel, 'hullRating'),
+    toRef(props.vessel, 'batteries'),
+    toRef(props.vessel, 'conditions')
+  ),
+  combatRating = computed(() => Math.round(Math.sqrt(offensiveRating.value * defensiveRating.value)))
 
-provide('batteries', batteries)
+provide('batteries', toRef(props.vessel, 'batteries'))
 </script>
 
 <template>
@@ -21,9 +38,9 @@ provide('batteries', batteries)
     <div class="vessel_information">
       <div class="class">{{ vessel.class }}</div>
 
-      <div class="type">{{ type }}</div>
+      <div class="type">{{ vessel.type }}</div>
 
-      <div class="points">0</div>
+      <div class="points">{{ combatRating }}</div>
 
       <ul class="eccentricies">
         <li v-for="eccentricity in vessel.eccentricities" :key="eccentricity">{{ ECCENTRICITIES.Vessel[eccentricity].name }}</li>
@@ -32,12 +49,20 @@ provide('batteries', batteries)
 
     <div class="vessel_batteries">
       <CardBattery
-        v-for="(battery, key) in batteries" :key="key"
-        :battery="battery"
-        :label="key" />
+        v-for="(battery, label) in vessel.batteries" :key="label"
+        :label="label"
+        :weaponId="battery.weaponId" />
     </div>
 
     <div class="vessel_conditions" v-if="isColossal">
+      <div class="vessel_condition _header">
+        <div class="hullCheckboxes">H</div>
+        <div class="engineRating">E</div>
+        <div class="armorRating">A</div>
+        <div class="firing_diagram">Battery A</div>
+        <div class="firing_diagram">Battery B</div>
+        <div class="firing_diagram">Battery C</div>
+      </div>
       <CardCondition
         v-for="(condition, key) in vessel.conditions" :key="key"
         :condition="condition"
@@ -70,11 +95,11 @@ provide('batteries', batteries)
   background: var(--vessel_card_background);
   color: var(--vessel_card_color);
   font-size: .9rem;
-  max-height: 3.75in;
-  line-height: calc(4/3);
+  height: 4in;
+  line-height: calc(12/9);
   overflow: hidden;
-  padding: .4rem;
-  width: 2.75in;
+  padding: var(--vessel_card_padding);
+  width: 3in;
 }
 
 .vessel_information {
@@ -84,6 +109,13 @@ provide('batteries', batteries)
     'type type class'
     'points eccentricies eccentricies';
   margin-bottom: var(--vessel_card_margin);
+
+  > .class,
+  > .type,
+  > .points,
+  > .eccentricies {
+    padding: 0 var(--vessel_card_padding);
+  }
 
   > .class,
   > .type {
@@ -103,7 +135,6 @@ provide('batteries', batteries)
     @include after_border(var(--vessel_card_border_color), 0 .1rem .1rem);
 
     grid-area: points;
-    padding: 0 var(--vessel_card_padding);
     text-align: center;
   }
 
@@ -112,38 +143,41 @@ provide('batteries', batteries)
     @include _vessel_card_eccentricities_list();
 
     grid-area: eccentricies;
+    margin-bottom: 0;
   }
 }
 
-.vessel_batteries,
-.vessel_conditions,
-.vessel_values {
-  @include after_border(var(--vessel_card_border_color), 1.2rem .1rem .1rem 1.2rem);
+.vessel_batteries {
+  @include after_border(var(--vessel_card_border_color), .1rem);
 
+  display: grid;
+  grid-template-columns: repeat(3, 3fr);
   margin-bottom: var(--vessel_card_margin);
-  padding-top: 1.2rem;
+}
+
+.vessel_conditions {
 }
 
 .vessel_values {
+  @include after_border(var(--vessel_card_border_color), .1rem);
+
   display: grid;
   grid-template-columns: repeat(3, 3fr);
   grid-template-areas:
     'sizeCheckboxes engineRating armorRating';
-  position: relative;
+  margin-bottom: var(--vessel_card_margin);
+  padding-top: 1.2rem;
   text-align: center;
 
-  &::after {
-    border-left-width: .1rem;
-  }
-
-  > * {
+  > .sizeCheckboxes,
+  > .engineRating,
+  > .armorRating {
     position: relative;
 
     &::before {
+      @include position(absolute, -1.2rem 0 auto);
       @include _vessel_card_header_text();
 
-      position: absolute;
-      inset: -1.2rem 0 auto;
       z-index: 1;
     }
   }
@@ -151,25 +185,19 @@ provide('batteries', batteries)
   > .sizeCheckboxes {
     grid-area: sizeCheckboxes;
 
-    &::before {
-      content: 'Size';
-    }
+    &::before { content: 'Size'; }
   }
 
   > .engineRating {
     grid-area: engineRating;
 
-    &::before {
-      content: 'Engine';
-    }
+    &::before { content: 'Engine'; }
   }
 
   > .armorRating {
     grid-area: armorRating;
 
-    &::before {
-      content: 'Armor';
-    }
+    &::before { content: 'Armor'; }
   }
 }
 
@@ -177,9 +205,12 @@ provide('batteries', batteries)
   display: flex;
   font-weight: bold;
   justify-content: center;
-  line-height: calc(8/3);
 
-  > * {
+  > .id,
+  > .speed,
+  > .altitude,
+  > .depth,
+  > .fired {
     &::after {
       border-bottom: .1rem solid var(--vessel_card_border_color);
       content: '';
@@ -189,53 +220,33 @@ provide('batteries', batteries)
   }
 
   > .id {
-    &::before {
-      content: 'ID'
-    }
+    &::before { content: 'ID' }
 
-    &::after {
-      width: 8em;
-    }
+    &::after { width: 8em; }
   }
 
   > .speed {
-    &::before {
-      content: 'Speed'
-    }
+    &::before { content: 'Speed' }
 
-    &::after {
-      width: 4em;
-    }
+    &::after { width: 4em; }
   }
 
   > .altitude {
-    &::before {
-      content: 'Alt.'
-    }
+    &::before { content: 'Alt.' }
 
-    &::after {
-      width: 2em;
-    }
+    &::after { width: 2em; }
   }
 
   > .depth {
-    &::before {
-      content: 'Depth'
-    }
+    &::before { content: 'Depth' }
 
-    &::after {
-      width: 2em;
-    }
+    &::after { width: 2em; }
   }
 
   > .fired {
-    &::before {
-      content: 'Fired □'
-    }
+    &::before { content: 'Fired □' }
 
-    &::after {
-      content: none;
-    }
+    &::after { content: none; }
   }
 }
 </style>

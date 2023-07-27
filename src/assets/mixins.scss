@@ -1,14 +1,11 @@
 @mixin _vessel_card_header_text {
   background: var(--body_color);
   color: var(--body_background_color);
-  padding: 0 var(--vessel_card_padding);
   font-weight: bold;
   text-transform: uppercase;
 }
 
 @mixin _vessel_card_eccentricities_list {
-  padding: 0 var(--vessel_card_padding);
-  margin: 0;
   overflow: hidden;
 
   > li {

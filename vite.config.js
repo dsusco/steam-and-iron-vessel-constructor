@@ -25,5 +25,8 @@ export default defineConfig({
   },
   define: {
     appVersion: JSON.stringify(packageJSON.version)
+  },
+  output: {
+    sanitizeFileName: false
   }
 })

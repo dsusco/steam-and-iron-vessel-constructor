@@ -95,11 +95,11 @@ provide('batteries', toRef(props.vessel, 'batteries'))
   background: var(--vessel_card_background);
   color: var(--vessel_card_color);
   font-size: .9rem;
-  height: 4in;
+  height: 3.9375in;
   line-height: calc(12/9);
   overflow: hidden;
   padding: var(--vessel_card_padding);
-  width: 3in;
+  width: 2.9375in;
 }
 
 .vessel_information {
@@ -154,6 +154,7 @@ provide('batteries', toRef(props.vessel, 'batteries'))
 }
 
 .vessel_conditions {
+  margin-bottom: var(--vessel_card_margin);
 }
 
 .vessel_values {

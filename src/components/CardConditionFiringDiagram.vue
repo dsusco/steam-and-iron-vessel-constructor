@@ -31,11 +31,11 @@ const
   position: relative;
 
   &._guns {
-    background: url('gun_arc_diagram.png') center no-repeat;
+    background: url('https://dsusco.github.io/steam-and-iron-vessel-constructor/gun_arc_diagram.png') center no-repeat;
   }
 
   &._releasedMunitions {
-    background: url('released_munitions_arc_diagram.png') center no-repeat;
+    background: url('https://dsusco.github.io/steam-and-iron-vessel-constructor/released_munitions_arc_diagram.png') center no-repeat;
   }
 
   > .arc {

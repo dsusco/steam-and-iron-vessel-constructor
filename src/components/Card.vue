@@ -148,7 +148,6 @@ provide('batteries', toRef(props.vessel, 'batteries'))
 }
 
 .vessel_batteries {
-
   display: grid;
   grid-template-columns: repeat(3, 3fr);
   margin-bottom: var(--vessel_card_margin);

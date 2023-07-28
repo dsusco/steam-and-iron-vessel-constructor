@@ -18,7 +18,7 @@ import { useOffensiveRating } from '@/composables/offensive-rating'
 const
   emit = defineEmits([
     'remove:vessel',
-    'update:class',
+    'update:klass',
     'update:type',
     'update:hullRating',
     'update:sizeCheckboxes',
@@ -27,7 +27,7 @@ const
   ]),
   props = defineProps({
     id: { type: String, required: true },
-    class: { type: String, required: true },
+    klass: { type: String, required: true },
     type: { type: String, required: true },
     eccentricities: { type: Array, required: true },
     batteries: { type: Object, required: true },
@@ -70,13 +70,13 @@ const
 
 <template>
   <fieldset class="vessel">
-    <legend>{{ this.class || id }}</legend>
+    <legend>{{ klass || id }}</legend>
 
     <label>
       Class
       <input
-        :value="class"
-        @input="emit('update:class', $event.target.value)">
+        :value="klass"
+        @input="emit('update:klass', $event.target.value)">
     </label>
 
     <label>

@@ -21,7 +21,7 @@ function removeCard (index) {
 <template>
   <main>
     <select class="_print_hidden" v-model="selectedVessel">
-      <option v-for="(vessel, id) in vesselsStore.vessels" :key="id" :value="id">{{ vessel.class || id }}</option>
+      <option v-for="(vessel, id) in vesselsStore.vessels" :key="id" :value="id">{{ vessel.klass || id }}</option>
     </select>
 
     <button class="_print_hidden" @click="addCard()">Add Card</button>

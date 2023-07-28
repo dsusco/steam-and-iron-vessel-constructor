@@ -15,13 +15,11 @@ const
     <div>
       <button @click="addVessel()">Add Vessel</button>
     </div>
-<div v-for="(vessel, id) in vessels" :key="id">
-{{vessel}}
-</div>
+
     <Vessel
       v-for="(vessel, id) in vessels" :key="id"
       :id="id"
-      v-model:class="vessel.class"
+      v-model:klass="vessel.klass"
       v-model:type="vessel.type"
       v-model:eccentricities="vessel.eccentricities"
       v-model:batteries="vessel.batteries"

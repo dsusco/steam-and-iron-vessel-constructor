@@ -15,9 +15,7 @@ const
     <div>
       <button @click="addWeapon()">Add Weapon</button>
     </div>
-<div v-for="(weapon, id) in weapons" :key="id">
-{{weapon}}
-</div>
+
     <Weapon
       v-for="(weapon, id) in weapons" :key="id"
       :id="id"

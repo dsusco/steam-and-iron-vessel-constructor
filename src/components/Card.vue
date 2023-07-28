@@ -36,7 +36,7 @@ provide('batteries', toRef(props.vessel, 'batteries'))
 <template>
   <div class="vessel_card">
     <div class="vessel_information">
-      <div class="class">{{ vessel.class }}</div>
+      <div class="class">{{ vessel.klass }}</div>
 
       <div class="type">{{ vessel.type }}</div>
 
@@ -148,7 +148,6 @@ provide('batteries', toRef(props.vessel, 'batteries'))
 }
 
 .vessel_batteries {
-  @include after_border(var(--vessel_card_border_color), .1rem);
 
   display: grid;
   grid-template-columns: repeat(3, 3fr);

@@ -1,19 +1,25 @@
 <script setup>
+import { storeToRefs } from 'pinia'
+
 import Vessel from '@/components/Vessel.vue'
 import { useVesselsStore } from '@/stores/vessels-store'
 
 const
-  vesselsStore = useVesselsStore()
+  vesselsStore = useVesselsStore(),
+  { addVessel, removeVessel } = vesselsStore,
+  { vessels } = storeToRefs(vesselsStore)
 </script>
 
 <template>
   <main>
     <div>
-      <button @click="vesselsStore.addVessel()">Add Vessel</button>
+      <button @click="addVessel()">Add Vessel</button>
     </div>
-
+<div v-for="(vessel, id) in vessels" :key="id">
+{{vessel}}
+</div>
     <Vessel
-      v-for="(vessel, id) in vesselsStore.vessels" :key="id"
+      v-for="(vessel, id) in vessels" :key="id"
       :id="id"
       v-model:class="vessel.class"
       v-model:type="vessel.type"
@@ -24,7 +30,7 @@ const
       v-model:sizeCheckboxes="vessel.sizeCheckboxes"
       v-model:engineRating="vessel.engineRating"
       v-model:armorRating="vessel.armorRating"
-      @remove:vessel="(id) => vesselsStore.removeVessel(id)" />
+      @remove:vessel="(id) => removeVessel(id)" />
   </main>
 </template>
 

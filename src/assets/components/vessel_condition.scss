@@ -52,6 +52,8 @@
   &._ready,
   &._damaged,
   &._crippled {
+    height: 4.8rem;
+
     &::before {
       @include position(absolute, 0 auto 0 0);
       @include _vessel_card_header_text();
